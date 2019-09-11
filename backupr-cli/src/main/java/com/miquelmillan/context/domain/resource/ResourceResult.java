@@ -6,6 +6,8 @@ public class ResourceResult {
 
     private Map<String, Object> resources;
 
+    public ResourceResult() {}
+
     public ResourceResult(Map<String, Object> resources) {
         this.resources = resources;
     }
