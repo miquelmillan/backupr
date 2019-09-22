@@ -4,5 +4,38 @@ logging:
       springframework.web: INFO
       hibernate: ERROR
     com:
+      amazonaws.services: DEBUG
       miquelmillan: DEBUG
 
+aws:
+  credentials:
+    bucketname:
+
+---
+spring:
+  profiles: dev
+
+aws:
+  credentials:
+    bucketname: backupr-dev
+
+logging:
+  level:
+    org:
+      springframework.web: INFO
+      hibernate: ERROR
+    com:
+      amazonaws.services: DEBUG
+      miquelmillan: DEBUG
+
+---
+spring:
+  profiles: pro
+logging:
+  level:
+    org:
+      springframework.web: ERROR
+      hibernate: ERROR
+    com:
+      amazonaws.services: ERROR
+      miquelmillan: INFO

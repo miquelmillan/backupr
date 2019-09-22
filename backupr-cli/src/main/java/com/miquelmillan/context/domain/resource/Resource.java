@@ -4,6 +4,10 @@ import java.util.Map;
 
 public class Resource {
 
+    public enum Properties {
+        MD5
+    };
+
     private String name;
     private String location;
     private Map<String, Object> properties;

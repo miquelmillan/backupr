@@ -1,12 +1,13 @@
 package com.miquelmillan;
 
 import com.miquelmillan.context.domain.resource.ResourceRepository;
+import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
 import com.miquelmillan.context.domain.resource.ResourceResult;
-import com.miquelmillan.context.infrastructure.filesystem.ResourceFileSystemRepository;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
+import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 
 
 @SpringBootApplication
@@ -28,6 +31,13 @@ public class App implements CommandLineRunner {
     public static int ERROR_RUNTIME_EXCEPTION = 2;
 
     private static Logger LOG = LoggerFactory.getLogger(App.class);
+
+    @Autowired
+    @Qualifier("fsResourceRepository")
+    private ResourceRepository fileSystemResourceRepository;
+    @Autowired
+    @Qualifier("s3ResourceRepository")
+    private ResourceRepository s3ResourceRepository;
 
     public static void main(String[] args) {
         LOG.info("STARTING THE APPLICATION");
@@ -62,15 +72,23 @@ public class App implements CommandLineRunner {
         for (int i=0; i<args.length; i+=2){
             switch (args[i]){
                 case "-d":
-                    ResourceResult result = this.resourceRepository().query(args[i+1]);
-                    result.getResources().forEach((name, elem) -> LOG.debug(elem.toString()));
+                    ResourceResult result = this.fileSystemResourceRepository().query(args[i+1]);
+                    result.getResources().forEach((name, elem) -> {
+                        try {
+                            this.s3ResourceRepository.store(elem);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ResourceRepositoryException e) {
+                            e.printStackTrace();
+                        }
+                    });
                     break;
             }
         }
     }
 
 
-    public ResourceRepository resourceRepository() {
-        return new ResourceFileSystemRepository();
+    public ResourceRepository fileSystemResourceRepository() {
+        return new FileSystemResourceRepository();
     }
 }

@@ -1,0 +1,14 @@
+logging:
+  level:
+    org:
+      springframework.web: INFO
+      hiberate: ERROR
+      apache: INFO
+    com:
+      amazonaws: INFO
+      miquelmillan: DEBUG
+
+aws:
+  credentials:
+    bucketname: backupr-dev
+
