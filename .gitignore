@@ -1,7 +1,9 @@
+backupr-cli/target
 backupr-cli/.settings/org.eclipse.core.resources.prefs
 backupr-cli/.settings/org.eclipse.jdt.apt.core.prefs
 backupr-cli/.settings/org.eclipse.jdt.core.prefs
 backupr-cli/.settings/org.eclipse.m2e.core.prefs
+backup-db/target
 backupr-db/.idea/compiler.xml
 backupr-db/.idea/encodings.xml
 backupr-db/.idea/misc.xml
