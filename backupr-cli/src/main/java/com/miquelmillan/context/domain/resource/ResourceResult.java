@@ -4,17 +4,19 @@ import java.util.Map;
 
 public class ResourceResult {
 
-    private Map<String, Object> resources;
+    private Map<String, Resource> resources;
 
-    public ResourceResult(Map<String, Object> resources) {
+    public ResourceResult() {}
+
+    public ResourceResult(Map<String, Resource> resources) {
         this.resources = resources;
     }
 
-    public Map<String, Object> getResources() {
+    public Map<String, Resource> getResources() {
         return resources;
     }
 
-    public void setResources(Map<String, Object> resources) {
+    public void setResources(Map<String, Resource> resources) {
         this.resources = resources;
     }
 }

@@ -1,0 +1,13 @@
+backupr-cli/target
+backupr-cli/.settings/org.eclipse.core.resources.prefs
+backupr-cli/.settings/org.eclipse.jdt.apt.core.prefs
+backupr-cli/.settings/org.eclipse.jdt.core.prefs
+backupr-cli/.settings/org.eclipse.m2e.core.prefs
+backup-db/target
+backupr-db/.idea/compiler.xml
+backupr-db/.idea/encodings.xml
+backupr-db/.idea/misc.xml
+backupr-db/.idea/modules.xml
+backupr-db/.idea/vcs.xml
+backupr-db/.idea/workspace.xml
+backupr-db/.idea/libraries/Maven__junit_junit_4_11.xml

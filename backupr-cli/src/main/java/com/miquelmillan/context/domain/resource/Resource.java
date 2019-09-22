@@ -1,14 +1,16 @@
 package com.miquelmillan.context.domain.resource;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class Resource {
+
+    public enum Properties {
+        MD5
+    };
 
     private String name;
     private String location;
     private Map<String, Object> properties;
-
 
     public Resource(String name, String location) {
         this.name = name;
@@ -47,11 +49,8 @@ public class Resource {
 
     @Override
     public String toString() {
-        return "Resource{" +
-                "name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", properties=" + properties +
-                '}';
+        return "Resource{" + "name='" + name + '\'' + ", location='" + location + '\'' + ", properties=" + properties
+                + '}';
     }
 
 }
