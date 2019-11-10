@@ -45,7 +45,7 @@ public class S3ResourceRepository implements ResourceRepository {
 
             PutObjectResult response = this.s3client.putObject(this.bucketName,
                                     item.getName(),
-                                    new File(item.getLocation()));
+                                    new File(item.getLocation().getLocation()));
 
             if (response == null){
                 throw new ResourceRepositoryException();

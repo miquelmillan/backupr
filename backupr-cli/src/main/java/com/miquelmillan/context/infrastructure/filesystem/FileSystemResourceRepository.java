@@ -1,9 +1,6 @@
 package com.miquelmillan.context.infrastructure.filesystem;
 
-import com.miquelmillan.context.domain.resource.Resource;
-import com.miquelmillan.context.domain.resource.ResourceRepository;
-import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
-import com.miquelmillan.context.domain.resource.ResourceResult;
+import com.miquelmillan.context.domain.resource.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -35,7 +32,10 @@ public class FileSystemResourceRepository implements ResourceRepository {
 
         try (Stream<Path> paths = Files.walk(_path)) {
             paths.filter(Files::isRegularFile)
-                    .forEach((elem) -> files.put(elem.toString(), new Resource(UUID.randomUUID().toString(), elem.toString())));
+                    .forEach((elem) -> files.put(
+                                                elem.toString(),
+                                                new Resource(UUID.randomUUID().toString(),
+                                                new Location(elem.toString()))));
         }
 
         return new ResourceResult(files);
