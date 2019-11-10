@@ -60,6 +60,7 @@ public class App implements CommandLineRunner {
             }
         }
 
+        System.out.println("Finishing execution, all good :-)");
         System.exit(0);
     }
 
