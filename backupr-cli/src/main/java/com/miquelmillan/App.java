@@ -1,9 +1,7 @@
 package com.miquelmillan;
 
-import com.miquelmillan.context.domain.resource.ResourceRepository;
-import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
-import com.miquelmillan.context.domain.resource.ResourceResult;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
+import com.miquelmillan.context.domain.location.Location;
+import com.miquelmillan.context.domain.resource.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -33,11 +30,9 @@ public class App implements CommandLineRunner {
     private static Logger LOG = LoggerFactory.getLogger(App.class);
 
     @Autowired
-    @Qualifier("fsResourceRepository")
-    private ResourceRepository fileSystemResourceRepository;
-    @Autowired
-    @Qualifier("s3ResourceRepository")
-    private ResourceRepository s3ResourceRepository;
+    @Qualifier("resourceComponent")
+    private ResourceComponent resourceComponent;
+
 
     public static void main(String[] args) {
         LOG.info("STARTING THE APPLICATION");
@@ -59,7 +54,7 @@ public class App implements CommandLineRunner {
         } else {
             try {
                 this.parseParameters(args);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(this.ERROR_RUNTIME_EXCEPTION);
             }
@@ -68,27 +63,20 @@ public class App implements CommandLineRunner {
         System.exit(0);
     }
 
-    private void parseParameters(String ... args) throws Exception{
-        for (int i=0; i<args.length; i+=2){
-            switch (args[i]){
+    private void parseParameters(String... args) {
+        for (int i = 0; i < args.length; i += 2) {
+            switch (args[i]) {
                 case "-d":
-                    ResourceResult result = this.fileSystemResourceRepository().query(args[i+1]);
-                    result.getResources().forEach((name, elem) -> {
-                        try {
-                            this.s3ResourceRepository.store(elem);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (ResourceRepositoryException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    try {
+                        resourceComponent.storeLocation(new Location(args[i + 1]));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
+
         }
     }
 
 
-    public ResourceRepository fileSystemResourceRepository() {
-        return new FileSystemResourceRepository();
-    }
 }

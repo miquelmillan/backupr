@@ -1,5 +1,7 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.location.Location;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,11 +20,6 @@ public class Resource {
         this.location = location;
     }
 
-    public Resource(String name, Location location, Map<String, Object> properties) {
-        this.name = name;
-        this.location = location;
-        this.properties = properties;
-    }
 
     public String getName() {
         return name;

@@ -1,6 +1,6 @@
 package com.miquelmillan.context.domain.resource;
 
-import com.miquelmillan.context.infrastructure.aws.s3.S3ResourceRepository;
+import com.miquelmillan.context.domain.location.Location;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

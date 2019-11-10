@@ -1,8 +1,13 @@
 package com.miquelmillan.context.domain.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import java.io.IOException;
 
 public class ResourceProcessor {
+    @Autowired
+    @Qualifier("s3ResourceRepository")
     private ResourceRepository repository;
 
     public ResourceProcessor(ResourceRepository repository){

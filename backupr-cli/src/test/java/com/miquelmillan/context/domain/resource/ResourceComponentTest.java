@@ -1,5 +1,6 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.location.Location;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ResourceComponentTest {

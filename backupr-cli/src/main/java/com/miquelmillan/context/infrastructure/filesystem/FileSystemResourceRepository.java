@@ -1,5 +1,6 @@
 package com.miquelmillan.context.infrastructure.filesystem;
 
+import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,6 @@ import java.util.stream.Stream;
 @Repository
 @Qualifier("fsResourceRepository")
 public class FileSystemResourceRepository implements ResourceRepository {
-    public FileSystemResourceRepository() {
-    }
-
     @Override
     public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
         return null;

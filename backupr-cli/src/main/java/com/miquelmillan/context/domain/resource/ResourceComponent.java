@@ -1,10 +1,19 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.location.Location;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+@Component
+@Qualifier("resourceComponent")
 public class ResourceComponent {
+    @Autowired
     private ResourceRequester requester;
+    @Autowired
     private ResourceProcessor processor;
 
     public ResourceComponent(ResourceRequester requester, ResourceProcessor processor) {

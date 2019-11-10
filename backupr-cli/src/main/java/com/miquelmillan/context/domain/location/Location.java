@@ -1,4 +1,4 @@
-package com.miquelmillan.context.domain.resource;
+package com.miquelmillan.context.domain.location;
 
 import java.util.Objects;
 

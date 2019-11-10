@@ -1,5 +1,6 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
 import org.junit.Test;
 
