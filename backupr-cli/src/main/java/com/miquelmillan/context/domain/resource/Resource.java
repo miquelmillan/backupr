@@ -1,6 +1,9 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.location.Location;
+
 import java.util.Map;
+import java.util.Objects;
 
 public class Resource {
 
@@ -9,19 +12,14 @@ public class Resource {
     };
 
     private String name;
-    private String location;
+    private Location location;
     private Map<String, Object> properties;
 
-    public Resource(String name, String location) {
+    public Resource(String name, Location location) {
         this.name = name;
         this.location = location;
     }
 
-    public Resource(String name, String location, Map<String, Object> properties) {
-        this.name = name;
-        this.location = location;
-        this.properties = properties;
-    }
 
     public String getName() {
         return name;
@@ -31,11 +29,11 @@ public class Resource {
         this.name = name;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -53,4 +51,18 @@ public class Resource {
                 + '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resource resource = (Resource) o;
+        return Objects.equals(name, resource.name) &&
+                Objects.equals(location, resource.location) &&
+                Objects.equals(properties, resource.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, location, properties);
+    }
 }
