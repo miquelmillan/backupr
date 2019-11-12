@@ -1,9 +1,13 @@
 package com.miquelmillan.context.infrastructure.aws.s3;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
@@ -14,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -44,7 +50,7 @@ public class S3ResourceRepository implements ResourceRepository {
             HashMap<String, Object> props = new HashMap<>();
 
             PutObjectResult response = this.s3client.putObject(this.bucketName,
-                                    item.getName(),
+                                    item.getLocation().getLocation(),
                                     new File(item.getLocation().getLocation()));
 
             if (response == null){
@@ -62,7 +68,24 @@ public class S3ResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public ResourceResult query(String path) throws IOException {
-        return null;
+    public ResourceResult query(String path) throws IOException, AmazonServiceException {
+        ResourceResult result = new ResourceResult();
+        HashMap<String, Resource> resources = new HashMap<>();
+
+        S3Object o = this.s3client.getObject(this.bucketName, path);
+
+        try (S3ObjectInputStream s3is = o.getObjectContent();
+            FileOutputStream fos = new FileOutputStream(new File(path))) {
+            byte[] read_buf = new byte[1024];
+            int read_len;
+            while ((read_len = s3is.read(read_buf)) > 0) {
+                fos.write(read_buf, 0, read_len);
+            }
+        }
+
+        resources.put(path, new Resource(path, new Location(path)));
+        result.setResources(resources);
+
+        return result;
     }
 }

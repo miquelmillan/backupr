@@ -33,14 +33,26 @@ public class ResourceComponentTest {
 
     @Test
     public void shouldProcessResource() throws IOException, ResourceRepositoryException {
-        when(requester.listLocation(location)).thenReturn(this.prepareResourceResult());
-        when(processor.storeResource(sample)).thenReturn(this.prepareResourceResult());
+        when(requester.requestOutputLocation(location)).thenReturn(this.prepareResourceResult());
+        when(processor.processOutputResource(sample)).thenReturn(this.prepareResourceResult());
 
         ResourceComponent component = new ResourceComponent(requester, processor);
-        component.storeLocation(location);
+        component.outboundLocation(location);
 
-        verify(requester, times(1)).listLocation(location);
-        verify(processor, times(1)).storeResource(sample);
+        verify(requester, times(1)).requestOutputLocation(location);
+        verify(processor, times(1)).processOutputResource(sample);
+    }
+
+    @Test
+    public void shouldRestoreResource() throws IOException, ResourceRepositoryException {
+        when(requester.requestInputLocation(location)).thenReturn(this.prepareResourceResult());
+        when(processor.processInputResource(sample)).thenReturn(this.prepareResourceResult());
+
+        ResourceComponent component = new ResourceComponent(requester, processor);
+        component.inboundLocation(location);
+
+        verify(requester, times(1)).requestInputLocation(location);
+        verify(processor, times(1)).processInputResource(sample);
     }
 
     private ResourceResult prepareResourceResult(){

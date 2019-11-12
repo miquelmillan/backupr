@@ -15,7 +15,11 @@ public class ResourceProcessor {
         this.repository = repository;
     }
 
-    public ResourceResult storeResource(Resource resource) throws IOException, ResourceRepositoryException {
+    public ResourceResult processOutputResource(Resource resource) throws IOException, ResourceRepositoryException {
         return this.repository.store(resource);
+    }
+
+    public ResourceResult processInputResource(Resource resource) throws IOException {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

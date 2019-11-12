@@ -16,8 +16,11 @@ public class ResourceRequester {
         this.repository = repository;
     }
 
-    public ResourceResult listLocation(Location location) throws IOException {
+    public ResourceResult requestOutputLocation(Location location) throws IOException {
         return this.repository.query(location.getLocation());
     }
 
+    public ResourceResult requestInputLocation(Location location) throws IOException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }

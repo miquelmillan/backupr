@@ -31,7 +31,7 @@ public class ResourceProcessorTest {
         when(repo.store(sample)).thenReturn(this.prepareResourceResult());
 
         ResourceProcessor processor = new ResourceProcessor(repo);
-        ResourceResult result = processor.storeResource(sample);
+        ResourceResult result = processor.processOutputResource(sample);
 
         verify(repo, times(1)).store(sample);
         assertEquals(result.getResources().get("file1").getLocation(), new Location(path + File.separatorChar + "file1"));

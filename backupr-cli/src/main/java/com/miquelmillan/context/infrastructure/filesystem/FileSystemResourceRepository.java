@@ -32,7 +32,7 @@ public class FileSystemResourceRepository implements ResourceRepository {
             paths.filter(Files::isRegularFile)
                     .forEach((elem) -> files.put(
                                                 elem.toString(),
-                                                new Resource(UUID.randomUUID().toString(),
+                                                new Resource(elem.getFileName().toString(),
                                                 new Location(elem.toString()))));
         }
 

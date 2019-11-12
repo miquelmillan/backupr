@@ -69,7 +69,7 @@ public class App implements CommandLineRunner {
             switch (args[i]) {
                 case "-d":
                     try {
-                        resourceComponent.storeLocation(new Location(args[i + 1]));
+                        resourceComponent.outboundLocation(new Location(args[i + 1]));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

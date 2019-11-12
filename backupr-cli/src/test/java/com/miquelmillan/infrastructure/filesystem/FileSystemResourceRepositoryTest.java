@@ -13,9 +13,8 @@ import static org.junit.Assert.assertSame;
 public class FileSystemResourceRepositoryTest {
 
     @Test
-    public void shouldListDirectoryContents() throws IOException {
+    public void pathWithFiles_QueryPath_QueryOk() throws IOException {
         String path = ResourceRepository.class.getClassLoader().getResource("filesystem").getPath();
-
 
         ResourceRepository repo = new FileSystemResourceRepository();
         ResourceResult result = repo.query(path);

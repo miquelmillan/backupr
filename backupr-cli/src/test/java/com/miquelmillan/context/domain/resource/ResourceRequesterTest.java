@@ -16,7 +16,7 @@ public class ResourceRequesterTest {
         String path = ResourceRepository.class.getClassLoader().getResource("filesystem").getPath();
 
         ResourceRequester requester = new ResourceRequester(new FileSystemResourceRepository());
-        ResourceResult result = requester.listLocation(new Location(path));
+        ResourceResult result = requester.requestOutputLocation(new Location(path));
 
         assertNotNull(result);
         assertEquals(4, result.getResources().size());
