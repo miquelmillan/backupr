@@ -13,10 +13,6 @@ public class Location {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Location{");

@@ -20,7 +20,7 @@ public class FileSystemResourceRepositoryTest {
         ResourceRepository repo = new FileSystemResourceRepository();
         ResourceResult result = repo.query(path);
 
-        assertSame(4, result.getResources().size());
+        assertSame(5, result.getResources().size());
         result.getResources().forEach((resource, _path) -> {
             System.out.println(resource);
             System.out.println(_path.getLocation());

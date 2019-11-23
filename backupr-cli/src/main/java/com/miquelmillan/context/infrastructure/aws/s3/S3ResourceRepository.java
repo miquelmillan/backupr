@@ -3,6 +3,7 @@ package com.miquelmillan.context.infrastructure.aws.s3;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,22 +40,26 @@ public class S3ResourceRepository implements ResourceRepository {
     public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
         ResourceResult result = new ResourceResult();
         HashMap<String, Resource> resources = new HashMap<>();
-        Resource res = new Resource(item.getName(), item.getLocation());
 
+
+        // Check if item is properly set
         if (item != null){
+            // open an output stream
             HashMap<String, Object> props = new HashMap<>();
 
-            PutObjectResult response = this.s3client.putObject(this.bucketName,
-                                    item.getName(),
-                                    new File(item.getLocation().getLocation()));
-
+            //write the outputstream with the info coming from the item.content.stream
+            PutObjectResult response =
+                    this.s3client.putObject(    this.bucketName,
+                                                item.getName(),
+                                                item.getContents().getInputStream(),
+                                                new ObjectMetadata());
             if (response == null){
                 throw new ResourceRepositoryException();
             }
 
             props.put(Resource.Properties.MD5.toString(), response.getContentMd5());
-            res.setProperties(props);
-            resources.put(res.getName(), res);
+            item.setProperties(props);
+            resources.put(item.getName(), item);
 
             result.setResources(resources);
         }
