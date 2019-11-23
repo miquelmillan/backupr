@@ -18,31 +18,53 @@ import static org.junit.Assert.*;
 
 public class ResourceProcessorTest {
     @Mock
-    ResourceRepository repo;
+    ResourceRepository remoteRepo;
+
+    @Mock
+    ResourceRepository localRepo;
 
     String path;
-    Resource sample;
+    Resource sampleFile, samplePath;
 
     @Before
     public void setup() throws FileNotFoundException {
         MockitoAnnotations.initMocks(this);
         this.path = ResourceRepository.class.getClassLoader().getResource("filesystem").getPath();
-        this.sample =  new Resource("file1",
+        this.sampleFile =  new Resource("file1",
                 new Location(this.path + File.separatorChar + "file1.txt"),
                 new Contents(this.path + File.separatorChar + "file1.txt"));
+        this.samplePath =  new Resource("filesystem",
+                new Location(this.path),
+                null);
 
     }
 
     @Test
-    public void shouldStoreResources() throws IOException, ResourceRepositoryException {
-        when(repo.store(sample)).thenReturn(this.prepareResourceResult());
+    public void mockedRemoteRepo_StoreRemoteFiles_StoreOk() throws IOException, ResourceRepositoryException {
+        when(remoteRepo.store(sampleFile)).thenReturn(this.prepareResourceResult());
 
-        ResourceProcessor processor = new ResourceProcessor(repo);
-        ResourceResult result = processor.processOutputResource(sample);
+        ResourceProcessor processor = new ResourceProcessor(localRepo, remoteRepo);
+        ResourceResult result = processor.processOutputResource(sampleFile);
 
-        verify(repo, times(1)).store(sample);
+        verify(remoteRepo, times(1)).store(sampleFile);
+        verify(localRepo, times(0)).store(sampleFile);
+
         assertEquals(result.getResources().get("file1.txt").getLocation(), new Location(path + File.separatorChar + "file1.txt"));
     }
+
+    @Test
+    public void mockedLocalRepo_StoreLocalFiles_StoreOk() throws IOException, ResourceRepositoryException {
+        when(localRepo.store(sampleFile)).thenReturn(this.prepareResourceResult());
+
+        ResourceProcessor processor = new ResourceProcessor(localRepo, remoteRepo);
+        ResourceResult result = processor.processInputResource(sampleFile);
+
+        verify(remoteRepo, times(0)).store(sampleFile);
+        verify(localRepo, times(1)).store(sampleFile);
+
+        assertEquals(result.getResources().get("file1.txt").getLocation(), new Location(path + File.separatorChar + "file1.txt"));
+    }
+
 
     private ResourceResult prepareResourceResult() throws FileNotFoundException {
         ResourceResult result = new ResourceResult();
@@ -53,6 +75,7 @@ public class ResourceProcessorTest {
                 new Contents(path + File.separatorChar + "file1.txt")));
 
         result.setResources(resources);
+
         return result;
     }
 }

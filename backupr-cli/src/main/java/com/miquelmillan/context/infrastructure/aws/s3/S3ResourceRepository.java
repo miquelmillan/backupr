@@ -19,11 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 @Repository
@@ -83,16 +79,21 @@ public class S3ResourceRepository implements ResourceRepository {
         S3Object o = this.s3client.getObject(this.bucketName, path);
 
         try (S3ObjectInputStream s3is = o.getObjectContent();
-            FileOutputStream fos = new FileOutputStream(new File(path))) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
             byte[] read_buf = new byte[1024];
             int read_len;
+
             while ((read_len = s3is.read(read_buf)) > 0) {
-                fos.write(read_buf, 0, read_len);
+                buffer.write(read_buf, 0, read_len);
             }
+
+            resources.put(path, new Resource(path,
+                                        new Location(path),
+                                        new Contents(new ByteArrayInputStream(buffer.toByteArray()))));
+
+            result.setResources(resources);
         }
 
-        resources.put(path, new Resource(path, new Location(path), new Contents(path)));
-        result.setResources(resources);
 
         return result;
     }

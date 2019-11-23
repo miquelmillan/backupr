@@ -5,6 +5,7 @@ import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
 public class FileSystemResourceRepository implements ResourceRepository {
     @Override
     public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override

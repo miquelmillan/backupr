@@ -9,18 +9,23 @@ import java.io.IOException;
 
 @Component
 public class ResourceRequester {
-    private ResourceRepository repository;
+    private ResourceRepository localRepository;
+    private ResourceRepository remoteRepository;
 
     @Autowired
-    public ResourceRequester(@Qualifier("fsResourceRepository") ResourceRepository repository){
-        this.repository = repository;
+    public ResourceRequester(
+            @Qualifier("fsResourceRepository") ResourceRepository localRepository,
+            @Qualifier("s3ResourceRepository") ResourceRepository remoteRepository
+    ){
+        this.localRepository = localRepository;
+        this.remoteRepository = remoteRepository;
     }
 
     public ResourceResult requestOutputLocation(Location location) throws IOException {
-        return this.repository.query(location.getLocation());
+        return this.localRepository.query(location.getLocation());
     }
 
     public ResourceResult requestInputLocation(Location location) throws IOException {
-        throw new UnsupportedOperationException("Not implemented");
+        return this.remoteRepository.query(location.getLocation());
     }
 }

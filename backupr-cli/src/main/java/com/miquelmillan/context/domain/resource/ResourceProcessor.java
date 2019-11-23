@@ -8,18 +8,22 @@ import java.io.IOException;
 
 @Component
 public class ResourceProcessor {
-    private ResourceRepository repository;
+    private ResourceRepository localRepository;
+    private ResourceRepository remoteRepository;
 
     @Autowired
-    public ResourceProcessor(@Qualifier("s3ResourceRepository") ResourceRepository repository){
-        this.repository = repository;
+    public ResourceProcessor(
+            @Qualifier("fsResourceRepository") ResourceRepository localRepository,
+            @Qualifier("s3ResourceRepository") ResourceRepository remoteRepository){
+        this.localRepository = localRepository;
+        this.remoteRepository = remoteRepository;
     }
 
     public ResourceResult processOutputResource(Resource resource) throws IOException, ResourceRepositoryException {
-        return this.repository.store(resource);
+        return this.remoteRepository.store(resource);
     }
 
-    public ResourceResult processInputResource(Resource resource) throws IOException {
-        throw new UnsupportedOperationException("Not implemented");
+    public ResourceResult processInputResource(Resource resource) throws IOException, ResourceRepositoryException {
+        return this.localRepository.store(resource);
     }
 }
