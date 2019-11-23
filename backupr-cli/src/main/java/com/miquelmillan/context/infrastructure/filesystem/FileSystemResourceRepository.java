@@ -1,10 +1,14 @@
 package com.miquelmillan.context.infrastructure.filesystem;
 
+import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,10 +34,19 @@ public class FileSystemResourceRepository implements ResourceRepository {
 
         try (Stream<Path> paths = Files.walk(_path)) {
             paths.filter(Files::isRegularFile)
-                    .forEach((elem) -> files.put(
-                                                elem.toString(),
-                                                new Resource(UUID.randomUUID().toString(),
-                                                new Location(elem.toString()))));
+                    .forEach((elem) -> {
+                        try {
+                            files.put(
+                                    elem.toString(),
+                                    new Resource(UUID.randomUUID().toString(),
+                                            new Location(elem.toString()),
+                                            new Contents(elem.toString())
+                                    ));
+                        } catch (FileNotFoundException e) {
+                            // TODO: Define a proper exception handling
+                            files.put(elem.toString(), null);
+                        }
+                    });
         }
 
         return new ResourceResult(files);

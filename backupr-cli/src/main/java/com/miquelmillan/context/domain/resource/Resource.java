@@ -1,5 +1,6 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
 
 import java.util.Map;
@@ -9,15 +10,17 @@ public class Resource {
 
     public enum Properties {
         MD5
-    };
+    }
 
     private String name;
     private Location location;
+    private Contents contents;
     private Map<String, Object> properties;
 
-    public Resource(String name, Location location) {
+    public Resource(String name, Location location, Contents contents) {
         this.name = name;
         this.location = location;
+        this.contents = contents;
     }
 
 
@@ -25,16 +28,12 @@ public class Resource {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Location getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public Contents getContents() {
+        return contents;
     }
 
     public Map<String, Object> getProperties() {
@@ -47,8 +46,13 @@ public class Resource {
 
     @Override
     public String toString() {
-        return "Resource{" + "name='" + name + '\'' + ", location='" + location + '\'' + ", properties=" + properties
-                + '}';
+        final StringBuilder sb = new StringBuilder("Resource{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", location=").append(location);
+        sb.append(", contents=").append(contents);
+        sb.append(", properties=").append(properties);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -63,6 +67,6 @@ public class Resource {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, location, properties);
+        return Objects.hash(name, location, contents, properties);
     }
 }
