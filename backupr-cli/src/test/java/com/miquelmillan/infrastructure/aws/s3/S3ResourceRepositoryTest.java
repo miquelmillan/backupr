@@ -26,7 +26,7 @@ public class S3ResourceRepositoryTest {
 
         ResourceResult result = fsRepo.query(path);
 
-        assertSame(4, result.getResources().size());
+        assertSame(5, result.getResources().size());
 
         for (Resource resource: result.getResources().values()){
             assertNotNull(resource);

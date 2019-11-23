@@ -19,6 +19,6 @@ public class ResourceRequesterTest {
         ResourceResult result = requester.requestOutputLocation(new Location(path));
 
         assertNotNull(result);
-        assertEquals(4, result.getResources().size());
+        assertEquals(5, result.getResources().size());
     }
 }
