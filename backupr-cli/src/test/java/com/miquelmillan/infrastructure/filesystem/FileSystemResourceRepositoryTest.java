@@ -62,7 +62,7 @@ public class FileSystemResourceRepositoryTest {
 
         for (Resource resource : result.getResources().values()) {
             assertNotNull(resource);
-            assertSame(resource.getLocation().getLocation(), "filesystem/file1.txt");
+            assertEquals(resource.getLocation().getLocation(), path);
             assertTrue(new File(path).exists());
 
             StringBuilder textBuilder = new StringBuilder();

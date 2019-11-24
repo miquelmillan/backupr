@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +22,30 @@ import java.util.stream.Stream;
 public class FileSystemResourceRepository implements ResourceRepository {
     @Override
     public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
-        throw new NotImplementedException();
+        Map<String, Resource> resources = new HashMap();
+
+        if (item != null && item.getContents() != null && item.getContents().getInputStream() != null) {
+
+            File f = new File(item.getLocation().getLocation());
+            f.createNewFile();
+
+            try (OutputStream output = new BufferedOutputStream(new FileOutputStream(item.getLocation().getLocation()));
+                InputStream input = item.getContents().getInputStream()) {
+                byte[] read_buf = new byte[1024];
+                int read_len;
+
+                while ((read_len = input.read(read_buf)) > 0) {
+                    output.write(read_buf, 0, read_len);
+                }
+            } catch (Exception e){
+                throw e;
+            }
+            resources.put(item.getName(), item);
+        } else {
+            throw new ResourceRepositoryException("Item cannot be null");
+        }
+
+        return new ResourceResult(resources);
     }
 
     @Override
