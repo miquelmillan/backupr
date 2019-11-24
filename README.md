@@ -1,6 +1,6 @@
-# Project Title
+# Backupr
 
-One Paragraph of project description goes here
+Yet another backup tool. Intended to backup all your resources (files, facebook pics, instagram posts, etc) and have a unique place where you can find them.
 
 ## Getting Started
 
@@ -8,80 +8,78 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To build the software you need to following tools:
 
 ```
-Give examples
+- Java 8
+- Maven 3.6.x
+- AWS s3
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+As this is a simple Spring Boot project built with Maven, to install the software it is as easy as:
 
 ```
-Give the example
+cd backupr-cli
+mvn clean package
 ```
 
-And repeat
-
+once you have it build you can run it using the sample commands in the Makefile in backupr-cli folder:
 ```
-until finished
+cd backupr-cli
+make dev_upload_folder
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
+or
+```
+cd backupr-cli
+make dev_download_file
+```
+Please be sure to have data in your S3 bucket in order to be able to download something.
 
 ## Running the tests
-
-Explain how to run the automated tests for this system
-
+```
+cd backupr-cli
+mvn test
+```
 ### Break down into end to end tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
+Nothing defined yet.
 
 ### And coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
+Nothing defined yet.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+As it is a CLI at the moment, it is as simple as running in locally. Nonetheless you will need a S3 bucket to store and retrieve the files, which can be setup in the following files:
+
+```
+src/main/resources/application.yml
+```
+section:
+
+```
+aws -> credentials -> bucket-name
+```
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Spring Boot](https://spring.io/projects/spring-boot) - The main application framework
 * [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+Rules are not defined yet, but contributions are always welcome, all Pull Requests are welcome :-)
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Miquel Millan** - *Initial work*
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPL v3 License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Soon :-)
