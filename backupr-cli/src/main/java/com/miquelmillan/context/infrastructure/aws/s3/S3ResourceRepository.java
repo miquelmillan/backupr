@@ -1,10 +1,15 @@
 package com.miquelmillan.context.infrastructure.aws.s3;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.miquelmillan.context.domain.contents.Contents;
+import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
@@ -14,9 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 @Repository
@@ -47,6 +50,7 @@ public class S3ResourceRepository implements ResourceRepository {
             // open an output stream
             HashMap<String, Object> props = new HashMap<>();
 
+
             //write the outputstream with the info coming from the item.content.stream
             PutObjectResult response =
                     this.s3client.putObject(    this.bucketName,
@@ -68,7 +72,29 @@ public class S3ResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public ResourceResult query(String path) throws IOException {
-        return null;
+    public ResourceResult query(String path) throws IOException, AmazonServiceException {
+        ResourceResult result = new ResourceResult();
+        HashMap<String, Resource> resources = new HashMap<>();
+
+        S3Object o = this.s3client.getObject(this.bucketName, path);
+
+        try (S3ObjectInputStream s3is = o.getObjectContent();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            byte[] read_buf = new byte[1024];
+            int read_len;
+
+            while ((read_len = s3is.read(read_buf)) > 0) {
+                buffer.write(read_buf, 0, read_len);
+            }
+
+            resources.put(path, new Resource(path,
+                                        new Location(path),
+                                        new Contents(new ByteArrayInputStream(buffer.toByteArray()))));
+
+            result.setResources(resources);
+        }
+
+
+        return result;
     }
 }

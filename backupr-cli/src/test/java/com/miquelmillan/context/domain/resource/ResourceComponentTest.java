@@ -36,14 +36,27 @@ public class ResourceComponentTest {
 
     @Test
     public void shouldProcessResource() throws IOException, ResourceRepositoryException {
-        when(requester.listLocation(this.location)).thenReturn(this.prepareResourceResult());
-        when(processor.storeResource(this.sample)).thenReturn(this.prepareResourceResult());
+        when(requester.requestOutputLocation(location)).thenReturn(this.prepareResourceResult());
+        when(processor.processOutputResource(sample)).thenReturn(this.prepareResourceResult());
 
         ResourceComponent component = new ResourceComponent(requester, processor);
-        component.storeLocation(this.location);
+        component.outboundLocation(location);
 
-        verify(requester, times(1)).listLocation(this.location);
-        verify(processor, times(1)).storeResource(this.sample);
+        verify(requester, times(1)).requestOutputLocation(location);
+        verify(processor, times(1)).processOutputResource(sample);
+    }
+
+    @Test
+    public void shouldRestoreResource() throws IOException, ResourceRepositoryException {
+        when(requester.requestInputLocation(this.location)).thenReturn(this.prepareResourceResult());
+        when(processor.processInputResource(this.sample)).thenReturn(this.prepareResourceResult());
+
+        ResourceComponent component = new ResourceComponent(requester, processor);
+        component.inboundLocation(this.location);
+
+        verify(requester, times(1)).requestInputLocation(this.location);
+        verify(processor, times(1)).processInputResource(this.sample);
+
     }
 
     private ResourceResult prepareResourceResult() throws FileNotFoundException {
