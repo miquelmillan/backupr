@@ -14,6 +14,8 @@ To build the software you need to following tools:
 - Java 8
 - Maven 3.6.x
 - AWS s3
+- Make
+- Bash shell
 ```
 
 ### Installing
