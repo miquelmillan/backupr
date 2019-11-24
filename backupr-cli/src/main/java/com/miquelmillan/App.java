@@ -67,9 +67,16 @@ public class App implements CommandLineRunner {
     private void parseParameters(String... args) {
         for (int i = 0; i < args.length; i += 2) {
             switch (args[i]) {
-                case "-d":
+                case "-u":
                     try {
                         resourceComponent.outboundLocation(new Location(args[i + 1]));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "-d":
+                    try {
+                        resourceComponent.inboundLocation(new Location(args[i + 1]));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

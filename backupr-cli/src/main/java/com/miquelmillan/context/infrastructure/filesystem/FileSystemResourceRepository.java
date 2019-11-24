@@ -24,9 +24,14 @@ public class FileSystemResourceRepository implements ResourceRepository {
     public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
         Map<String, Resource> resources = new HashMap();
 
-        if (item != null && item.getContents() != null && item.getContents().getInputStream() != null) {
+        if (item != null
+                && item.getContents() != null
+                && item.getContents().getInputStream() != null) {
 
             File f = new File(item.getLocation().getLocation());
+            if (f.getParentFile() != null) {
+                f.getParentFile().mkdirs();
+            }
             f.createNewFile();
 
             try (OutputStream output = new BufferedOutputStream(new FileOutputStream(item.getLocation().getLocation()));
