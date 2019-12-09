@@ -2,7 +2,6 @@ package com.miquelmillan.context.domain.resource;
 
 import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

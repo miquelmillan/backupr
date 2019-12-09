@@ -1,19 +1,21 @@
 package com.miquelmillan.context.domain.resource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-public class Resource {
-
+public class Resource implements Serializable {
     public enum Properties {
         MD5
     }
 
     private String name;
     private Location location;
+    @JsonIgnore
     private Contents contents;
     private Map<String, Object> properties;
 
@@ -69,4 +71,5 @@ public class Resource {
     public int hashCode() {
         return Objects.hash(name, location, contents, properties);
     }
+
 }

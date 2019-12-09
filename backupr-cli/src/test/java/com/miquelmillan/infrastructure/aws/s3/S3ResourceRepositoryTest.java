@@ -5,7 +5,7 @@ import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
 import com.miquelmillan.context.domain.resource.ResourceResult;
 import com.miquelmillan.context.infrastructure.aws.s3.S3ResourceRepository;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
+import com.miquelmillan.context.infrastructure.filesystem.resource.FileSystemResourceRepository;
 import org.junit.Test;
 
 import java.io.BufferedReader;

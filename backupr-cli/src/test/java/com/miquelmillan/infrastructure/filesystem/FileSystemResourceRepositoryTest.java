@@ -6,9 +6,8 @@ import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
 import com.miquelmillan.context.domain.resource.ResourceResult;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
+import com.miquelmillan.context.infrastructure.filesystem.resource.FileSystemResourceRepository;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;

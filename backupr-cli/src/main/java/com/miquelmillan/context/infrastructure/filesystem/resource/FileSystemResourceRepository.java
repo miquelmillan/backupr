@@ -1,4 +1,4 @@
-package com.miquelmillan.context.infrastructure.filesystem;
+package com.miquelmillan.context.infrastructure.filesystem.resource;
 
 import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
