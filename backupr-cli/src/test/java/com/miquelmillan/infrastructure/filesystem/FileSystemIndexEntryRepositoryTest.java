@@ -6,7 +6,7 @@ import com.miquelmillan.context.domain.index.IndexEntryRepository;
 import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
-import com.miquelmillan.context.infrastructure.filesystem.resource.FileSystemIndexEntryRepository;
+import com.miquelmillan.context.infrastructure.infrastructure.filesystem.index.FileSystemIndexEntryRepository;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;

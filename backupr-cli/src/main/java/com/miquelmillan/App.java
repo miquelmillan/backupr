@@ -1,5 +1,6 @@
 package com.miquelmillan;
 
+import com.miquelmillan.context.domain.index.IndexEntry;
 import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.*;
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootApplication
@@ -64,22 +67,31 @@ public class App implements CommandLineRunner {
         System.exit(0);
     }
 
-    private void parseParameters(String... args) {
+    private void parseParameters(String... args) throws ResourceUnavailableException,
+            ResourceRepositoryException,
+            ResourceUnknownException, IOException {
         for (int i = 0; i < args.length; i += 2) {
             switch (args[i]) {
                 case "-u":
                     try {
-                        resourceComponent.outboundLocation(new Location(args[i + 1]));
+                        resourceComponent.outboundResource(UUID.fromString(args[i + 1]));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 case "-d":
                     try {
-                        resourceComponent.inboundLocation(new Location(args[i + 1]));
+                        resourceComponent.inboundResource(UUID.fromString(args[i + 1]));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    break;
+                case "-l":
+                    List<IndexEntry> entries = resourceComponent.listLocation();
+                    entries.forEach(System.out::println);
+                    break;
+                case "-i":
+                    resourceComponent.indexLocation(new Location(args[i + 1]));
                     break;
             }
 

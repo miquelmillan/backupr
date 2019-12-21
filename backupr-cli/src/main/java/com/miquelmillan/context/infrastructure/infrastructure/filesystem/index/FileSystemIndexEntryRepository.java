@@ -1,4 +1,4 @@
-package com.miquelmillan.context.infrastructure.filesystem.resource;
+package com.miquelmillan.context.infrastructure.infrastructure.filesystem.index;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

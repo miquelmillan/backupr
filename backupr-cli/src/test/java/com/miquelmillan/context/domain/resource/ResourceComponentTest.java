@@ -1,17 +1,20 @@
 package com.miquelmillan.context.domain.resource;
 
 import com.miquelmillan.context.domain.contents.Contents;
+import com.miquelmillan.context.domain.index.IndexEntry;
+import com.miquelmillan.context.domain.index.IndexEntryRepository;
 import com.miquelmillan.context.domain.location.Location;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
 
 public class ResourceComponentTest {
     @Mock
@@ -20,9 +23,14 @@ public class ResourceComponentTest {
     @Mock
     ResourceRequester requester;
 
+    @Mock
+    IndexEntryRepository index;
+
+
     String path;
     Location location;
     Resource sample;
+    UUID uid;
 
     @Before
     public void setup() throws FileNotFoundException {
@@ -32,31 +40,80 @@ public class ResourceComponentTest {
         this.sample = new Resource("file1.txt",
                 new Location(path + File.separatorChar + "file1.txt"),
                 new Contents(path + File.separatorChar + "file1.txt"));
+        this.uid = UUID.randomUUID();
     }
-
     @Test
-    public void shouldProcessResource() throws IOException, ResourceRepositoryException {
-        when(requester.requestOutputLocation(location)).thenReturn(this.prepareResourceResult());
+    public void resourceComponent_processUid_processOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
+        IndexEntry entry = this.prepareIndexResult();
+
+        when(requester.requestOutputResource(sample.getLocation().getLocation())).thenReturn(this.prepareResourceResult());
         when(processor.processOutputResource(sample)).thenReturn(this.prepareResourceResult());
+        when(index.get(uid)).thenReturn(entry);
+        doNothing().when(index).addOrUpdate(entry);
+        doNothing().when(index).addOrUpdate(new IndexEntry(entry.getId(), entry.getElement(), IndexEntry.State.INDEXED));
 
-        ResourceComponent component = new ResourceComponent(requester, processor);
-        component.outboundLocation(location);
 
-        verify(requester, times(1)).requestOutputLocation(location);
+        ResourceComponent component = new ResourceComponent(requester, processor, index);
+        component.outboundResource(uid);
+
+        verify(requester, times(1)).requestOutputResource(sample.getLocation().getLocation());
         verify(processor, times(1)).processOutputResource(sample);
+        verify(index, times(1)).addOrUpdate(entry);
+        verify(index, times(1)).addOrUpdate(
+                new IndexEntry(entry.getId(), entry.getElement(), IndexEntry.State.INDEXED));
+        verify(index, times(1)).get(uid);
     }
 
     @Test
-    public void shouldRestoreResource() throws IOException, ResourceRepositoryException {
-        when(requester.requestInputLocation(this.location)).thenReturn(this.prepareResourceResult());
-        when(processor.processInputResource(this.sample)).thenReturn(this.prepareResourceResult());
+    public void resourceComponent_restoreUid_restoreOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
+        IndexEntry entry = this.prepareIndexResult();
 
-        ResourceComponent component = new ResourceComponent(requester, processor);
-        component.inboundLocation(this.location);
+        when(requester.requestInputResource(sample.getLocation().getLocation())).thenReturn(this.prepareResourceResult());
+        when(processor.processInputResource(sample)).thenReturn(this.prepareResourceResult());
+        when(index.get(uid)).thenReturn(entry);
+        doNothing().when(index).addOrUpdate(entry);
+        doNothing().when(index).addOrUpdate(new IndexEntry(entry.getId(), entry.getElement(), IndexEntry.State.INDEXED));
 
-        verify(requester, times(1)).requestInputLocation(this.location);
-        verify(processor, times(1)).processInputResource(this.sample);
 
+        ResourceComponent component = new ResourceComponent(requester, processor, index);
+        component.inboundResource(uid);
+
+        verify(requester, times(1)).requestInputResource(sample.getLocation().getLocation());
+        verify(processor, times(1)).processInputResource(sample);
+        verify(index, times(1)).addOrUpdate(entry);
+        verify(index, times(1)).addOrUpdate(
+                new IndexEntry(entry.getId(), entry.getElement(), IndexEntry.State.INDEXED));
+        verify(index, times(1)).get(uid);
+
+    }
+
+    @Test
+    public void resourceComponent_indexLocation_indexOk() throws IOException {
+        doNothing().when(index).addOrUpdate(any(List.class));
+
+        ResourceComponent component = new ResourceComponent(requester, processor, index);
+        component.indexLocation(this.location);
+
+        verify(index, times(1)).addOrUpdate(any(List.class));
+    }
+
+    @Test
+    public void resourceComponent_listLocation_listOk() throws FileNotFoundException {
+        when(index.listAll()).thenReturn(Arrays.asList(new IndexEntry[] {prepareIndexResult()}));
+
+        ResourceComponent component = new ResourceComponent(requester, processor, index);
+        component.listLocation();
+
+        verify(index, times(1)).listAll();
+    }
+
+
+    private IndexEntry<Resource> prepareIndexResult() throws FileNotFoundException {
+        Resource r = new Resource("file1.txt",
+                new Location(path + File.separatorChar + "file1.txt"),
+                new Contents(path + File.separatorChar + "file1.txt" ));
+
+        return new IndexEntry<>(uid, r);
     }
 
     private ResourceResult prepareResourceResult() throws FileNotFoundException {
