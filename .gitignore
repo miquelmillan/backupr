@@ -1,4 +1,5 @@
 docs
+backupr-cli/.backupr
 backupr-cli/logs.log
 backupr-cli/target
 backupr-cli/.settings/org.eclipse.core.resources.prefs
