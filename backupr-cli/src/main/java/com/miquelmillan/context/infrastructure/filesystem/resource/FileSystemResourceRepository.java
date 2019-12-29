@@ -5,7 +5,6 @@ import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 
@@ -21,9 +19,7 @@ import java.util.stream.Stream;
 @Qualifier("fsResourceRepository")
 public class FileSystemResourceRepository implements ResourceRepository {
     @Override
-    public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
-        Map<String, Resource> resources = new HashMap();
-
+    public void store(Resource item) throws IOException, ResourceRepositoryException {
         if (item != null
                 && item.getContents() != null
                 && item.getContents().getInputStream() != null) {
@@ -45,38 +41,23 @@ public class FileSystemResourceRepository implements ResourceRepository {
             } catch (Exception e){
                 throw e;
             }
-            resources.put(item.getName(), item);
         } else {
             throw new ResourceRepositoryException("Item cannot be null");
         }
-
-        return new ResourceResult(resources);
     }
 
     @Override
-    public ResourceResult query(String path) throws IOException {
-        Map<String, Resource> files = new HashMap();
+    public Resource query(String path) throws IOException {
         Path _path = Paths.get(path);
 
-        try (Stream<Path> paths = Files.walk(_path)) {
-            paths.filter(Files::isRegularFile)
-                    .forEach((elem) -> {
-                        try {
-                            files.put(
-                                    elem.toString(),
-                                    new Resource(UUID.randomUUID().toString(),
-                                            new Location(elem.toString()),
-                                            new Contents(elem.toString())
-                                    ));
-                        } catch (FileNotFoundException e) {
-                            // TODO: Define a proper exception handling
-                            files.put(elem.toString(), null);
-                        }
-                    });
-
+        if (Files.exists(_path)) {
+            return new Resource(_path.getFileName().toString(),
+                    new Location(_path.toString()),
+                    new Contents(_path.toString())
+            );
         }
 
-        return new ResourceResult(files);
+        return null;
     }
 }
 

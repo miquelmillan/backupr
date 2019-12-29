@@ -30,7 +30,7 @@ logging:
 
 application:
     index:
-      location: ~/.backupr/index.json
+      location: ./.backupr/index.json
 
 ---
 spring:
@@ -46,4 +46,4 @@ logging:
 
 application:
     index:
-      location: ~/.backupr/index.json
+      location: ./.backupr/index.json

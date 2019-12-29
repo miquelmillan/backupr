@@ -17,32 +17,36 @@ public class IndexEntry<I extends Serializable> {
         }
     }
 
-    private final UUID id;
-    private final I element;
-    private final State state;
+    private I element;
+    private State state;
 
-    public IndexEntry(UUID id, I element) {
-        this.id = id;
+    public IndexEntry() {
+    }
+
+    public IndexEntry(I element) {
         this.element = element;
         this.state = State.PENDING;
     }
 
-    public IndexEntry(UUID id, I element, State state) {
-        this.id = id;
+    public IndexEntry(I element, State state) {
         this.element = element;
         this.state = state;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public I getElement() {
         return element;
     }
 
+    public void setElement(I element) {
+        this.element = element;
+    }
+
     public State getState() {
         return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     @Override
@@ -50,21 +54,19 @@ public class IndexEntry<I extends Serializable> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IndexEntry<?> that = (IndexEntry<?>) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(element, that.element) &&
+        return element.equals(that.element) &&
                 state == that.state;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, element, state);
+        return Objects.hash(element, state);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("IndexEntry {");
-        sb.append("id=").append(id);
-        sb.append(", element=").append(element);
+        final StringBuilder sb = new StringBuilder("IndexEntry{");
+        sb.append("element=").append(element);
         sb.append(", state=").append(state);
         sb.append('}');
         return sb.toString();

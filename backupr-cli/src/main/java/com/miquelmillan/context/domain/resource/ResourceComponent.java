@@ -55,24 +55,19 @@ public class ResourceComponent {
             throw new ResourceUnknownException("Resource UUID is unknown, could not process it");
         }
         // Update index state
-        this.index.addOrUpdate(new IndexEntry(uid, resource, IndexEntry.State.PENDING));
+        this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        ResourceResult result = this.requester.requestOutputResource(resource.getLocation().getLocation());
+        Resource result = this.requester.requestOutputResource(resource.getLocation().getLocation());
 
-        switch (result.getResources().values().size()) {
-            case 0:
-                throw new ResourceUnavailableException("Resource was not available locally");
-            case 1:
-                this.processor.processOutputResource(result.getResources().values().iterator().next());
-                break;
-            default:
-                throw new ResourceRepositoryException("UUID has more than 1 resources");
-
+        if (result != null) {
+            this.processor.processOutputResource(result);
+        } else {
+            throw new ResourceUnavailableException("Resource was not available locally");
         }
 
         // Update index state
-        this.index.addOrUpdate(new IndexEntry(uid, resource, IndexEntry.State.INDEXED));
+        this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.INDEXED));
     }
 
 
@@ -85,27 +80,23 @@ public class ResourceComponent {
             throw new ResourceUnknownException("Resource UUID is unknown, could not process it");
         }
         // Update index state
-        this.index.addOrUpdate(new IndexEntry(uid, resource, IndexEntry.State.PENDING));
+        this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        ResourceResult result = this.requester.requestInputResource(resource.getLocation().getLocation());
+        Resource result = this.requester.requestInputResource(resource.getLocation().getLocation());
 
-        switch (result.getResources().values().size()) {
-            case 0:
-                throw new ResourceUnavailableException("Resource was not available locally");
-            case 1:
-                this.processor.processInputResource(result.getResources().values().iterator().next());
-                break;
-            default:
-                throw new ResourceRepositoryException("UUID has more than 1 resources");
-
+        if (result != null) {
+            this.processor.processInputResource(result);
+        } else {
+            throw new ResourceUnavailableException("Resource was not available locally");
         }
 
+
         // Update index state
-        this.index.addOrUpdate(new IndexEntry(uid, resource, IndexEntry.State.INDEXED));
+        this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.INDEXED));
     }
 
-    public List<IndexEntry> listLocation() {
+    public List<IndexEntry<Resource>> listLocation() {
         return new ArrayList(this.index.listAll());
     }
 
@@ -114,8 +105,9 @@ public class ResourceComponent {
         List<IndexEntry> entries = new ArrayList();
 
         for (File file: files) {
-            entries.add(new IndexEntry(UUID.randomUUID(),
-                            new Resource(   file.getName(),
+            entries.add(new IndexEntry(
+                            new Resource(UUID.randomUUID(),
+                                    file.getName(),
                                     new Location(file.getPath()),
                                     new Contents(file.getPath()))
                     )
@@ -123,14 +115,5 @@ public class ResourceComponent {
         }
 
         this.index.addOrUpdate(entries);
-    }
-
-
-    public ResourceResult outboundLocation(Location location) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    private ResourceResult inboundLocation(Location location) {
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 }

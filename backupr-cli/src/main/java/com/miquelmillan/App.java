@@ -87,8 +87,19 @@ public class App implements CommandLineRunner {
                     }
                     break;
                 case "-l":
-                    List<IndexEntry> entries = resourceComponent.listLocation();
-                    entries.forEach(System.out::println);
+                    List<IndexEntry<Resource>> entries = resourceComponent.listLocation();
+                    entries.forEach( indexEntry -> {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("uid: '");
+                        sb.append(indexEntry.getElement().getId());
+                        sb.append("', name: '");
+                        sb.append(indexEntry.getElement().getName());
+                        sb.append("', location: '");
+                        sb.append(indexEntry.getElement().getLocation().getLocation());
+                        sb.append("'");
+
+                        System.out.println(sb);
+                    });
                     break;
                 case "-i":
                     resourceComponent.indexLocation(new Location(args[i + 1]));

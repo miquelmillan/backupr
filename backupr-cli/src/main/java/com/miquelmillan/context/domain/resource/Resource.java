@@ -7,17 +7,22 @@ import com.miquelmillan.context.domain.location.Location;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Resource implements Serializable {
     public enum Properties {
         MD5
     }
 
+    private UUID id;
     private String name;
     private Location location;
     @JsonIgnore
     private Contents contents;
     private Map<String, Object> properties;
+
+    public Resource(){
+    }
 
     public Resource(String name, Location location, Contents contents) {
         this.name = name;
@@ -25,17 +30,43 @@ public class Resource implements Serializable {
         this.contents = contents;
     }
 
+    public Resource(UUID id, String name, Location location, Contents contents) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.contents = contents;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Location getLocation() {
         return location;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public Contents getContents() {
         return contents;
+    }
+
+    public void setContents(Contents contents) {
+        this.contents = contents;
     }
 
     public Map<String, Object> getProperties() {
@@ -47,29 +78,27 @@ public class Resource implements Serializable {
     }
 
     @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Resource{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", location=").append(location);
-        sb.append(", contents=").append(contents);
-        sb.append(", properties=").append(properties);
-        sb.append('}');
-        return sb.toString();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resource resource = (Resource) o;
-        return Objects.equals(name, resource.name) &&
-                Objects.equals(location, resource.location) &&
-                Objects.equals(properties, resource.properties);
+        return id.equals(resource.id) &&
+                name.equals(resource.name) &&
+                location.equals(resource.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, location, contents, properties);
+        return Objects.hash(id, name, location, contents, properties);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Resource{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", location=").append(location);
+        sb.append('}');
+        return sb.toString();
+    }
 }

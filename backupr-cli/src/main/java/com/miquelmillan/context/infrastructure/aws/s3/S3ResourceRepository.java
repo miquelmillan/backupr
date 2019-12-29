@@ -13,13 +13,14 @@ import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
-import com.miquelmillan.context.domain.resource.ResourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 @Repository
@@ -40,10 +41,7 @@ public class S3ResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
-        ResourceResult result = new ResourceResult();
-        HashMap<String, Resource> resources = new HashMap<>();
-
+    public void store(Resource item) throws IOException, ResourceRepositoryException {
 
         // Check if item is properly set
         if (item != null){
@@ -54,7 +52,7 @@ public class S3ResourceRepository implements ResourceRepository {
             //write the outputstream with the info coming from the item.content.stream
             PutObjectResult response =
                     this.s3client.putObject(    this.bucketName,
-                                                item.getName(),
+                                                item.getLocation().getLocation(),
                                                 item.getContents().getInputStream(),
                                                 new ObjectMetadata());
             if (response == null){
@@ -63,19 +61,12 @@ public class S3ResourceRepository implements ResourceRepository {
 
             props.put(Resource.Properties.MD5.toString(), response.getContentMd5());
             item.setProperties(props);
-            resources.put(item.getName(), item);
-
-            result.setResources(resources);
         }
-
-        return result;
     }
 
     @Override
-    public ResourceResult query(String path) throws IOException, AmazonServiceException {
-        ResourceResult result = new ResourceResult();
-        HashMap<String, Resource> resources = new HashMap<>();
-
+    public Resource query(String path) throws IOException, AmazonServiceException {
+        Resource result;
         S3Object o = this.s3client.getObject(this.bucketName, path);
 
         try (S3ObjectInputStream s3is = o.getObjectContent();
@@ -87,11 +78,10 @@ public class S3ResourceRepository implements ResourceRepository {
                 buffer.write(read_buf, 0, read_len);
             }
 
-            resources.put(path, new Resource(path,
-                                        new Location(path),
-                                        new Contents(new ByteArrayInputStream(buffer.toByteArray()))));
+            result = new Resource(path,
+                                new Location(path),
+                                new Contents(new ByteArrayInputStream(buffer.toByteArray())));
 
-            result.setResources(resources);
         }
 
 

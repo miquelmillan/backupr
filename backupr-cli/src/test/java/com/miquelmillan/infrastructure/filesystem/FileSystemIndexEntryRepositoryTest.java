@@ -6,7 +6,7 @@ import com.miquelmillan.context.domain.index.IndexEntryRepository;
 import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
-import com.miquelmillan.context.infrastructure.infrastructure.filesystem.index.FileSystemIndexEntryRepository;
+import com.miquelmillan.context.infrastructure.filesystem.index.FileSystemIndexEntryRepository;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -51,8 +51,12 @@ public class FileSystemIndexEntryRepositoryTest {
         Collection<File> files = FileUtils.listFiles(new File(this.basePath), null, true);
 
         for (File file : files) {
-            Resource r = new Resource(file.getName(), new Location(file.getPath()), new Contents(file.getPath()));
-            IndexEntry<Resource> entry = new IndexEntry(UUID.randomUUID(), r);
+            Resource r = new Resource(
+                    UUID.randomUUID(),
+                    file.getName(),
+                    new Location(file.getPath()),
+                    new Contents(file.getPath()));
+            IndexEntry<Resource> entry = new IndexEntry(r);
             repo.addOrUpdate(entry);
         }
 
@@ -66,10 +70,11 @@ public class FileSystemIndexEntryRepositoryTest {
         List<IndexEntry> entries = new ArrayList();
 
         for (File file: files) {
-            entries.add(new IndexEntry(UUID.randomUUID(),
-                    new Resource(   file.getName(),
-                                    new Location(file.getPath()),
-                                    new Contents(file.getPath()))
+            entries.add(new IndexEntry(
+                    new Resource(UUID.randomUUID(),
+                                file.getName(),
+                                new Location(file.getPath()),
+                                new Contents(file.getPath()))
                     )
             );
         }
@@ -84,8 +89,9 @@ public class FileSystemIndexEntryRepositoryTest {
         List<IndexEntry> entries = new ArrayList();
 
         for (File file: files) {
-            entries.add(new IndexEntry(UUID.randomUUID(),
-                            new Resource(   file.getName(),
+            entries.add(new IndexEntry(
+                            new Resource(UUID.randomUUID(),
+                                    file.getName(),
                                     new Location(file.getPath()),
                                     new Contents(file.getPath()))
                     )
