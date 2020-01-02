@@ -13,9 +13,9 @@ public interface IndexEntryRepository<T extends Serializable> {
     void addOrUpdate(List<IndexEntry<T>> entry) throws IOException;
 
     void remove(IndexEntry<T> entry) throws IOException;
-    void remove(List<IndexEntry<Resource>> entriesToRemove) throws IOException;
 
     IndexEntry<T> get(UUID id);
+    List<T> get(T params);
 
     Collection<IndexEntry<T>> listAll();
 }

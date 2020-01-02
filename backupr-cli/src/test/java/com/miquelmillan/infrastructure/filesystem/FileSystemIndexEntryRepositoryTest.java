@@ -132,6 +132,27 @@ public class FileSystemIndexEntryRepositoryTest {
 
     }
 
+    @Test
+    public void pathWithFiles_IndexPath_SearchByPathOk() throws IOException {
+        Collection<File> files = FileUtils.listFiles(new File(this.basePath), null, true);
+        List<IndexEntry> entries = new ArrayList();
+
+        for (File file: files) {
+            entries.add(new IndexEntry(
+                            new Resource(UUID.randomUUID(),
+                                    file.getName(),
+                                    new Location(file.getPath()),
+                                    new Contents(file.getPath()))
+                    )
+            );
+        }
+
+        repo.addOrUpdate(entries);
+        List<Resource> search = repo.get(new Resource("dummy", new Location(this.basePath), null));
+
+        assertEquals(search.size(), files.size());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void pathWithFiles_IndexPath_ConstructorKo() throws IOException {
         this.repo = new FileSystemIndexEntryRepository(null);

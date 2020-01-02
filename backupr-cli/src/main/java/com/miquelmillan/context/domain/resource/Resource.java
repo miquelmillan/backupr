@@ -24,6 +24,11 @@ public class Resource implements Serializable {
     public Resource(){
     }
 
+    public Resource(Location loc){
+        this.name = "";
+        this.location = loc;
+    }
+
     public Resource(String name, Location location, Contents contents) {
         this.name = name;
         this.location = location;

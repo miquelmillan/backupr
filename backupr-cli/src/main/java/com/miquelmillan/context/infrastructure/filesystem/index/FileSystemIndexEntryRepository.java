@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Qualifier("fsIndexEntryRepository")
@@ -54,17 +55,32 @@ public class FileSystemIndexEntryRepository implements IndexEntryRepository<Reso
     }
 
     @Override
-    public void remove(List<IndexEntry<Resource>> entriesToRemove) throws IOException {
-        entriesToRemove.forEach(
-                elem -> entries.remove(elem.getElement().getId())
-        );
-        this.syncIndex();
-    }
-
-    @Override
     public IndexEntry get(UUID id) {
         return entries.get(id);
     }
+
+    @Override
+    public List<Resource> get(Resource params) {
+        List<Resource> result = null;
+
+        if (params.getLocation() != null){
+            String loc = params.getLocation().getLocation();
+            result =
+                    entries.values().
+                            stream().
+                            filter( r -> {
+                                if (r.getElement().getLocation() != null) {
+                                    return r.getElement().getLocation().getLocation().contains(loc);
+                                }
+                                return false;
+                            }).map( r -> r.getElement())
+                            .collect(Collectors.toList());
+
+        }
+
+        return result;
+    }
+
 
     public Collection<IndexEntry<Resource>> listAll() {
         return this.entries.values();

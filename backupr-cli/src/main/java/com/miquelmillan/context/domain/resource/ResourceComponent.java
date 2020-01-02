@@ -31,7 +31,6 @@ public class ResourceComponent {
 
     /**
      * TODO
-     * inbound/outbound File
      * inbound/outbound Location (Folder)
      * list indexed files (status, origin, destination, and UUID)
      * Daemon setup ==> NOT in the component
@@ -70,6 +69,31 @@ public class ResourceComponent {
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.INDEXED));
     }
 
+    public boolean outboundLocation(Location loc) {
+
+        List<Resource> resources = this.index.get(new Resource(loc));
+
+        int outboundedCount = resources.parallelStream()
+                .map( r -> {
+                    try {
+                        this.outboundResource(r.getId());
+                        return 1;
+                    } catch (   IOException | ResourceUnknownException |
+                                ResourceUnavailableException | ResourceRepositoryException e) {
+                        e.printStackTrace();
+                    }
+                    return 0;
+                })
+                .reduce(0, Integer::sum);
+
+        if (resources.size() != outboundedCount){
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     public void inboundResource(UUID uid) throws IOException,
                                                     ResourceUnknownException,
@@ -95,6 +119,30 @@ public class ResourceComponent {
         // Update index state
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.INDEXED));
     }
+
+    public boolean inboundLocation(Location loc) {
+        List<Resource> resources = this.index.get(new Resource(loc));
+
+        int outboundedCount = resources.parallelStream()
+                .map( r -> {
+                    try {
+                        this.inboundResource(r.getId());
+                        return 1;
+                    } catch (   IOException | ResourceUnknownException |
+                            ResourceUnavailableException | ResourceRepositoryException e) {
+                        e.printStackTrace();
+                    }
+                    return 0;
+                })
+                .reduce(0, Integer::sum);
+
+        if (resources.size() != outboundedCount){
+            return false;
+        }
+
+        return true;
+    }
+
 
     public List<IndexEntry<Resource>> listLocation() {
         return new ArrayList(this.index.listAll());
