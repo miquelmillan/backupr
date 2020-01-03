@@ -28,6 +28,10 @@ logging:
       amazonaws.services: DEBUG
       miquelmillan: DEBUG
 
+application:
+    index:
+      location: ./.backupr/index.json
+
 ---
 spring:
   profiles: pro
@@ -39,3 +43,7 @@ logging:
     com:
       amazonaws.services: ERROR
       miquelmillan: INFO
+
+application:
+    index:
+      location: ./.backupr/index.json

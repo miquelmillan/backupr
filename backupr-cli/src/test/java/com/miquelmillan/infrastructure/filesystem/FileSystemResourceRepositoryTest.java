@@ -5,17 +5,15 @@ import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
-import com.miquelmillan.context.domain.resource.ResourceResult;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
+import com.miquelmillan.context.infrastructure.filesystem.resource.FileSystemResourceRepository;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 
 public class FileSystemResourceRepositoryTest {
@@ -33,16 +31,14 @@ public class FileSystemResourceRepositoryTest {
 
     @Test
     public void pathWithFiles_QueryPath_QueryOk() throws IOException {
-        String path = ResourceRepository.class.getClassLoader().getResource("filesystem").getPath();
+        String path = ResourceRepository.class.getClassLoader().getResource("filesystem" +
+                                    File.separator + "folder_a" +
+                                    File.separator + "file1.txt").getPath();
 
         ResourceRepository repo = new FileSystemResourceRepository();
-        ResourceResult result = repo.query(path);
+        Resource result = repo.query(path);
 
-        assertSame(5, result.getResources().size());
-        result.getResources().forEach((resource, _path) -> {
-            System.out.println(resource);
-            System.out.println(_path.getLocation());
-        });
+        assertNotNull(result);
     }
 
     @Test
@@ -57,26 +53,6 @@ public class FileSystemResourceRepositoryTest {
                 new Contents(new ByteArrayInputStream("Hello there!".getBytes()))
         );
 
-        ResourceResult result = repo.store(res);
-        assertNotNull(result);
-
-        for (Resource resource : result.getResources().values()) {
-            assertNotNull(resource);
-            assertEquals(resource.getLocation().getLocation(), path);
-            assertTrue(new File(path).exists());
-
-            StringBuilder textBuilder = new StringBuilder();
-            try (Reader reader = new BufferedReader(new InputStreamReader
-                    (new FileInputStream(new File(path)),
-                            Charset.forName(StandardCharsets.UTF_8.name())))) {
-                int c;
-                while ((c = reader.read()) != -1) {
-                    textBuilder.append((char) c);
-                }
-            }
-
-            assertEquals("Hello there!", textBuilder.toString());
-        }
-
+        repo.store(res);
     }
 }

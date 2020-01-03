@@ -2,7 +2,6 @@ package com.miquelmillan.context.domain.resource;
 
 import com.miquelmillan.context.domain.contents.Contents;
 import com.miquelmillan.context.domain.location.Location;
-import com.miquelmillan.context.infrastructure.filesystem.FileSystemResourceRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,10 +10,8 @@ import org.mockito.MockitoAnnotations;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -42,42 +39,40 @@ public class ResourceRequesterTest {
     }
 
     @Test
-    public void mockedLocalRepo_ListLocalFiles_ListOk() throws IOException, ResourceRepositoryException {
+    public void mockedLocalRepo_ListLocalFiles_ListOk() throws IOException {
         when(localRepo.query(this.path)).thenReturn(this.prepareResourceResult());
 
         ResourceRequester requester = new ResourceRequester(localRepo, remoteRepo);
-        ResourceResult result = requester.requestOutputLocation(new Location(this.path));
+        Resource result = requester.requestOutputLocation(new Location(this.path));
 
         verify(localRepo, times(1)).query(this.path);
         verify(remoteRepo, times(0)).query(this.path);
 
-        assertEquals(result.getResources().get("file1.txt").getLocation(),
+        assertEquals(result.getLocation(),
                                 new Location(path + File.separatorChar + "file1.txt"));
     }
 
     @Test
-    public void mockedRemoteRepo_ListRemoteFiles_ListOk() throws IOException, ResourceRepositoryException {
+    public void mockedRemoteRepo_ListRemoteFiles_ListOk() throws IOException {
         when(remoteRepo.query(this.path)).thenReturn(this.prepareResourceResult());
 
         ResourceRequester requester = new ResourceRequester(localRepo, remoteRepo);
-        ResourceResult result = requester.requestInputLocation(new Location(this.path));
+        Resource result = requester.requestInputLocation(new Location(this.path));
 
         verify(remoteRepo, times(1)).query(this.path);
         verify(localRepo, times(0)).query(this.path);
 
-        assertEquals(result.getResources().get("file1.txt").getLocation(),
+        assertEquals(result.getLocation(),
                 new Location(path + File.separatorChar + "file1.txt"));
     }
 
-    private ResourceResult prepareResourceResult() throws FileNotFoundException {
-        ResourceResult result = new ResourceResult();
-        Map<String, Resource> resources = new HashMap();
+    private Resource prepareResourceResult() throws FileNotFoundException {
+        Resource result;
 
-        resources.put("file1.txt", new Resource("file1.txt",
+        result = new Resource("file1.txt",
                 new Location(path + File.separatorChar + "file1.txt"),
-                new Contents(path + File.separatorChar + "file1.txt")));
+                new Contents(path + File.separatorChar + "file1.txt"));
 
-        result.setResources(resources);
         return result;
     }
 }

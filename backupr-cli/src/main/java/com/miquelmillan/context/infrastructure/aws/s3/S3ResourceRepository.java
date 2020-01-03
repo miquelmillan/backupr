@@ -13,13 +13,15 @@ import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
-import com.miquelmillan.context.domain.resource.ResourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 @Repository
@@ -27,7 +29,7 @@ import java.util.HashMap;
 public class S3ResourceRepository implements ResourceRepository {
     private AmazonS3 s3client;
     private String bucketName;
-
+    private static String LOCATION_PREFIX = "filesystem";
     @Autowired
     public S3ResourceRepository(@Value("${aws.credentials.bucketname}") String bucketName) {
         this.s3client = AmazonS3ClientBuilder
@@ -40,21 +42,20 @@ public class S3ResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public ResourceResult store(Resource item) throws IOException, ResourceRepositoryException {
-        ResourceResult result = new ResourceResult();
-        HashMap<String, Resource> resources = new HashMap<>();
-
+    public void store(Resource item) throws IOException, ResourceRepositoryException {
 
         // Check if item is properly set
         if (item != null){
             // open an output stream
             HashMap<String, Object> props = new HashMap<>();
-
+            String location = item.getLocation().getLocation().replace("./", "");;
 
             //write the outputstream with the info coming from the item.content.stream
             PutObjectResult response =
                     this.s3client.putObject(    this.bucketName,
-                                                item.getName(),
+                                                this.LOCATION_PREFIX +
+                                                        File.separatorChar +
+                                                        location,
                                                 item.getContents().getInputStream(),
                                                 new ObjectMetadata());
             if (response == null){
@@ -63,20 +64,16 @@ public class S3ResourceRepository implements ResourceRepository {
 
             props.put(Resource.Properties.MD5.toString(), response.getContentMd5());
             item.setProperties(props);
-            resources.put(item.getName(), item);
-
-            result.setResources(resources);
         }
-
-        return result;
     }
 
     @Override
-    public ResourceResult query(String path) throws IOException, AmazonServiceException {
-        ResourceResult result = new ResourceResult();
-        HashMap<String, Resource> resources = new HashMap<>();
+    public Resource query(String path) throws IOException, AmazonServiceException {
+        Resource result;
+        String location = path.replace("./", "");
 
-        S3Object o = this.s3client.getObject(this.bucketName, path);
+        S3Object o = this.s3client.getObject(this.bucketName,
+                                                        this.LOCATION_PREFIX + File.separatorChar + location);
 
         try (S3ObjectInputStream s3is = o.getObjectContent();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
@@ -87,11 +84,10 @@ public class S3ResourceRepository implements ResourceRepository {
                 buffer.write(read_buf, 0, read_len);
             }
 
-            resources.put(path, new Resource(path,
-                                        new Location(path),
-                                        new Contents(new ByteArrayInputStream(buffer.toByteArray()))));
+            result = new Resource(path,
+                                new Location(path),
+                                new Contents(new ByteArrayInputStream(buffer.toByteArray())));
 
-            result.setResources(resources);
         }
 
 

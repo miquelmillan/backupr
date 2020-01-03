@@ -19,11 +19,13 @@ public class ResourceProcessor {
         this.remoteRepository = remoteRepository;
     }
 
-    public ResourceResult processOutputResource(Resource resource) throws IOException, ResourceRepositoryException {
-        return this.remoteRepository.store(resource);
+    public Resource processOutputResource(Resource resource) throws IOException, ResourceRepositoryException {
+        this.remoteRepository.store(resource);
+        return resource;
     }
 
-    public ResourceResult processInputResource(Resource resource) throws IOException, ResourceRepositoryException {
-        return this.localRepository.store(resource);
+    public Resource processInputResource(Resource resource) throws IOException, ResourceRepositoryException {
+        this.localRepository.store(resource);
+        return resource;
     }
 }
