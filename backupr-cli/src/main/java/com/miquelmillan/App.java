@@ -67,26 +67,45 @@ public class App implements CommandLineRunner {
         System.exit(0);
     }
 
-    private void parseParameters(String... args) throws ResourceUnavailableException,
+    private boolean parseParameters(String... args) throws ResourceUnavailableException,
             ResourceRepositoryException,
             ResourceUnknownException, IOException {
         for (int i = 0; i < args.length; i += 2) {
             switch (args[i]) {
                 case "-u":
                     try {
-                        resourceComponent.outboundResource(UUID.fromString(args[i + 1]));
+                        if (isUUID(args[i+1])) {
+                            LOG.info("Processing resource: {}", args[i+1]);
+                            resourceComponent.outboundResource(UUID.fromString(args[i+1]));
+                            LOG.info("Resource processed");
+                        } else {
+                            LOG.info("Processing location: {}", args[i+1]);
+                            resourceComponent.outboundLocation(new Location(args[i+1]));
+                            LOG.info("Location processed");
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
+                         return false;
                     }
                     break;
                 case "-d":
                     try {
-                        resourceComponent.inboundResource(UUID.fromString(args[i + 1]));
+                        if (isUUID(args[i+1])) {
+                            LOG.info("Processing resource: {}", args[i+1]);
+                            resourceComponent.inboundResource(UUID.fromString(args[i+1]));
+                            LOG.info("Resource processed");
+                        } else {
+                            LOG.info("Processing location: {}", args[i+1]);
+                            resourceComponent.inboundLocation(new Location(args[i+1]));
+                            LOG.info("Location processed");
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
+                        return false;
                     }
                     break;
                 case "-l":
+                    LOG.info("Listing current location");
                     List<IndexEntry<Resource>> entries = resourceComponent.listLocation();
                     entries.forEach( indexEntry -> {
                         StringBuilder sb = new StringBuilder();
@@ -98,16 +117,28 @@ public class App implements CommandLineRunner {
                         sb.append(indexEntry.getElement().getLocation().getLocation());
                         sb.append("'");
 
-                        System.out.println(sb);
+                        LOG.info(sb.toString());
+                        LOG.info("Location listed");
                     });
                     break;
                 case "-i":
+                    LOG.info("Indexing current location");
                     resourceComponent.indexLocation(new Location(args[i + 1]));
+                    LOG.info("Current location indexed");
                     break;
             }
 
         }
+        return true;
     }
 
+    private boolean isUUID(String s){
+        try {
+            UUID.fromString(s);
+            return true;
+        } catch (IllegalArgumentException e){
+            return false;
+        }
+    }
 
 }

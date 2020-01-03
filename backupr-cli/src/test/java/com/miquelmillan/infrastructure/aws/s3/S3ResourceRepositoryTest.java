@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class S3ResourceRepositoryTest {
     @Test
-    public void pathWithFiles_StorePath_StoreOk() throws IOException, ResourceRepositoryException {
+    public void pathWithFiles_StorePath_StoreOkAndQueryOk() throws IOException, ResourceRepositoryException {
         String path = ResourceRepository.class.getClassLoader().getResource("filesystem"+
                 File.separator + "file1.txt" ).getPath();
 
@@ -32,16 +32,8 @@ public class S3ResourceRepositoryTest {
         assertNotNull(
                 props.get(Resource.Properties.MD5.toString())
         );
-    }
 
-    @Test
-    public void pathWithFiles_QueryPath_QueryOk() throws IOException, ResourceRepositoryException {
-        String path = ResourceRepository.class.getClassLoader().getResource("filesystem"+
-                File.separator + "file1.txt" ).getPath();
-
-        ResourceRepository s3Repo = new S3ResourceRepository("backupr-dev");
-
-        Resource result = s3Repo.query(path);
+        result = s3Repo.query(path);
 
         assertNotNull(result);
         assertSame(result.getLocation().getLocation(), path);

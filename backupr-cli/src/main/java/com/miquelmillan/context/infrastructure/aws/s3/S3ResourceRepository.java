@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -28,7 +29,7 @@ import java.util.HashMap;
 public class S3ResourceRepository implements ResourceRepository {
     private AmazonS3 s3client;
     private String bucketName;
-
+    private static String LOCATION_PREFIX = "filesystem";
     @Autowired
     public S3ResourceRepository(@Value("${aws.credentials.bucketname}") String bucketName) {
         this.s3client = AmazonS3ClientBuilder
@@ -47,12 +48,14 @@ public class S3ResourceRepository implements ResourceRepository {
         if (item != null){
             // open an output stream
             HashMap<String, Object> props = new HashMap<>();
-
+            String location = item.getLocation().getLocation().replace("./", "");;
 
             //write the outputstream with the info coming from the item.content.stream
             PutObjectResult response =
                     this.s3client.putObject(    this.bucketName,
-                                                item.getLocation().getLocation(),
+                                                this.LOCATION_PREFIX +
+                                                        File.separatorChar +
+                                                        location,
                                                 item.getContents().getInputStream(),
                                                 new ObjectMetadata());
             if (response == null){
@@ -67,7 +70,10 @@ public class S3ResourceRepository implements ResourceRepository {
     @Override
     public Resource query(String path) throws IOException, AmazonServiceException {
         Resource result;
-        S3Object o = this.s3client.getObject(this.bucketName, path);
+        String location = path.replace("./", "");
+
+        S3Object o = this.s3client.getObject(this.bucketName,
+                                                        this.LOCATION_PREFIX + File.separatorChar + location);
 
         try (S3ObjectInputStream s3is = o.getObjectContent();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
