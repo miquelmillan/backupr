@@ -1,5 +1,6 @@
 package com.miquelmillan.infrastructure.aws.s3;
 
+import com.miquelmillan.context.domain.location.Location;
 import com.miquelmillan.context.domain.resource.Resource;
 import com.miquelmillan.context.domain.resource.ResourceRepository;
 import com.miquelmillan.context.domain.resource.ResourceRepositoryException;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -21,10 +23,17 @@ public class S3ResourceRepositoryTest {
         String path = ResourceRepository.class.getClassLoader().getResource("filesystem"+
                 File.separator + "file1.txt" ).getPath();
 
+        Resource sample = new Resource(
+                UUID.nameUUIDFromBytes("file1.txt".getBytes()),
+                "file1.txt",
+                new Location(path),
+                null
+        );
+
         ResourceRepository fsRepo = new FileSystemResourceRepository();
         ResourceRepository s3Repo = new S3ResourceRepository("backupr-dev");
 
-        Resource result = fsRepo.query(path);
+        Resource result = fsRepo.query(sample);
 
         assertNotNull(result);
         s3Repo.store(result);
@@ -33,7 +42,7 @@ public class S3ResourceRepositoryTest {
                 props.get(Resource.Properties.MD5.toString())
         );
 
-        result = s3Repo.query(path);
+        result = s3Repo.query(sample);
 
         assertNotNull(result);
         assertSame(result.getLocation().getLocation(), path);

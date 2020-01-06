@@ -148,7 +148,8 @@ public class FileSystemIndexEntryRepositoryTest {
         }
 
         repo.addOrUpdate(entries);
-        List<Resource> search = repo.get(new Resource("dummy", new Location(this.basePath), null));
+
+        List<Resource> search = repo.get(new Resource(UUID.randomUUID(), "dummy", new Location(this.basePath), null));
 
         assertEquals(search.size(), files.size());
     }

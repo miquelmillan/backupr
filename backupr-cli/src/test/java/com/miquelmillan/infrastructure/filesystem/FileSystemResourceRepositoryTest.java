@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -36,9 +37,17 @@ public class FileSystemResourceRepositoryTest {
                                     File.separator + "file1.txt").getPath();
 
         ResourceRepository repo = new FileSystemResourceRepository();
-        Resource result = repo.query(path);
+        Resource res = new Resource(
+                UUID.nameUUIDFromBytes("recovered.txt".getBytes()),
+                "recovered.txt",
+                new Location(path),
+                null
+        );
+
+        Resource result = repo.query(res);
 
         assertNotNull(result);
+        assertNotNull(result.getContents());
     }
 
     @Test
@@ -48,6 +57,7 @@ public class FileSystemResourceRepositoryTest {
 
         ResourceRepository repo = new FileSystemResourceRepository();
         Resource res = new Resource(
+                UUID.nameUUIDFromBytes("recovered.txt".getBytes()),
                 "recovered.txt",
                 new Location(path),
                 new Contents(new ByteArrayInputStream("Hello there!".getBytes()))

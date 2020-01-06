@@ -57,7 +57,7 @@ public class ResourceComponent {
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        Resource result = this.requester.requestOutputResource(resource.getLocation().getLocation());
+        Resource result = this.requester.requestOutputResource(resource);
 
         if (result != null) {
             this.processor.processOutputResource(result);
@@ -72,7 +72,7 @@ public class ResourceComponent {
     public boolean outboundLocation(Location loc) {
 
         List<Resource> resources = this.index.get(new Resource(loc));
-
+        LOG.info("outbounding resources. Size: {}", resources.size());
         int outboundedCount = resources.parallelStream()
                 .map( r -> {
                     try {
@@ -109,7 +109,7 @@ public class ResourceComponent {
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        Resource result = this.requester.requestInputResource(resource.getLocation().getLocation());
+        Resource result = this.requester.requestInputResource(resource);
 
         if (result != null) {
             this.processor.processInputResource(result);
@@ -156,7 +156,7 @@ public class ResourceComponent {
 
         for (File file: files) {
             entries.add(new IndexEntry(
-                            new Resource(UUID.randomUUID(),
+                            new Resource(UUID.nameUUIDFromBytes(file.getPath().getBytes()),
                                     file.getName(),
                                     new Location(file.getPath()),
                                     new Contents(file.getPath()))

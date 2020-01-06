@@ -101,6 +101,7 @@ public class FileSystemIndexEntryRepository implements IndexEntryRepository<Reso
     }
 
     private void syncIndex() throws IOException {
+
         mapper.writeValue(new File(indexLocation), entries);
     }
 }

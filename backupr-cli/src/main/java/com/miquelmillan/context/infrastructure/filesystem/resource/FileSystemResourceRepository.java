@@ -47,11 +47,13 @@ public class FileSystemResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public Resource query(String path) throws IOException {
-        Path _path = Paths.get(path);
+    public Resource query(Resource item) throws IOException {
+        Path _path = Paths.get(item.getLocation().getLocation());
 
         if (Files.exists(_path)) {
-            return new Resource(_path.getFileName().toString(),
+            return new Resource(
+                    item.getId(),
+                    _path.getFileName().toString(),
                     new Location(_path.toString()),
                     new Contents(_path.toString())
             );

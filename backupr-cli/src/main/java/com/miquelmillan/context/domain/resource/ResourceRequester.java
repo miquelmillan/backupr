@@ -21,19 +21,12 @@ public class ResourceRequester {
         this.remoteRepository = remoteRepository;
     }
 
-    public Resource requestOutputResource(String path) throws IOException {
-        return this.localRepository.query(path);
+    public Resource requestOutputResource(Resource item) throws IOException {
+        return this.localRepository.query(item);
     }
 
-    public Resource requestInputResource(String path) throws IOException {
-        return this.remoteRepository.query(path);
+    public Resource requestInputResource(Resource item) throws IOException {
+        return this.remoteRepository.query(item);
     }
 
-    public Resource requestOutputLocation(Location location) throws IOException {
-        return this.localRepository.query(location.getLocation());
-    }
-
-    public Resource requestInputLocation(Location location) throws IOException {
-        return this.remoteRepository.query(location.getLocation());
-    }
 }

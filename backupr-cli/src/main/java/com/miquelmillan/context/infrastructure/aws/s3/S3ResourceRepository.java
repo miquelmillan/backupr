@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Repository
 @Qualifier("s3ResourceRepository")
@@ -55,7 +56,7 @@ public class S3ResourceRepository implements ResourceRepository {
                     this.s3client.putObject(    this.bucketName,
                                                 this.LOCATION_PREFIX +
                                                         File.separatorChar +
-                                                        location,
+                                                        item.getId(),
                                                 item.getContents().getInputStream(),
                                                 new ObjectMetadata());
             if (response == null){
@@ -68,12 +69,11 @@ public class S3ResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public Resource query(String path) throws IOException, AmazonServiceException {
+    public Resource query(Resource item) throws IOException, AmazonServiceException {
         Resource result;
-        String location = path.replace("./", "");
 
         S3Object o = this.s3client.getObject(this.bucketName,
-                                                        this.LOCATION_PREFIX + File.separatorChar + location);
+                                                        this.LOCATION_PREFIX + File.separatorChar + item.getId());
 
         try (S3ObjectInputStream s3is = o.getObjectContent();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
@@ -84,8 +84,9 @@ public class S3ResourceRepository implements ResourceRepository {
                 buffer.write(read_buf, 0, read_len);
             }
 
-            result = new Resource(path,
-                                new Location(path),
+            result = new Resource(item.getId(),
+                                item.getName(),
+                                new Location(item.getLocation().getLocation()),
                                 new Contents(new ByteArrayInputStream(buffer.toByteArray())));
 
         }

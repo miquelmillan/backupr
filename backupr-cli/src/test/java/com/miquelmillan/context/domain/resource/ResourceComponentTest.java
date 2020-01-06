@@ -56,7 +56,7 @@ public class ResourceComponentTest {
     }
     @Test
     public void resourceComponent_processUid_processOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
-        when(requester.requestOutputResource(sample.getLocation().getLocation())).thenReturn(this.prepareResourceResultUnique());
+        when(requester.requestOutputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(processor.processOutputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(index.get(uid)).thenReturn(entry);
         doNothing().when(index).addOrUpdate(entry);
@@ -66,7 +66,7 @@ public class ResourceComponentTest {
         ResourceComponent component = new ResourceComponent(requester, processor, index);
         component.outboundResource(uid);
 
-        verify(requester, times(1)).requestOutputResource(sample.getLocation().getLocation());
+        verify(requester, times(1)).requestOutputResource(sample);
         verify(processor, times(1)).processOutputResource(sample);
         verify(index, times(1)).addOrUpdate(entry);
         verify(index, times(1)).addOrUpdate(
@@ -76,7 +76,7 @@ public class ResourceComponentTest {
 
     @Test
     public void resourceComponent_restoreUid_restoreOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
-        when(requester.requestInputResource(sample.getLocation().getLocation())).thenReturn(this.prepareResourceResultUnique());
+        when(requester.requestInputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(processor.processInputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(index.get(uid)).thenReturn(entry);
         doNothing().when(index).addOrUpdate(entry);
@@ -86,7 +86,7 @@ public class ResourceComponentTest {
         ResourceComponent component = new ResourceComponent(requester, processor, index);
         component.inboundResource(uid);
 
-        verify(requester, times(1)).requestInputResource(sample.getLocation().getLocation());
+        verify(requester, times(1)).requestInputResource(sample);
         verify(processor, times(1)).processInputResource(sample);
         verify(index, times(1)).addOrUpdate(entry);
         verify(index, times(1)).addOrUpdate(
