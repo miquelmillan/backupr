@@ -124,11 +124,15 @@ public class ResourceComponent {
 
     public boolean inboundLocation(Location loc) {
         List<Resource> resources = this.index.get(new Resource(loc));
+        LOG.info("inbounding resources. Size: {}", resources.size());
 
         int outboundedCount = resources.parallelStream()
                 .map( r -> {
                     try {
+                        LOG.debug("inbounding resource: {}", r.getId());
                         this.inboundResource(r.getId());
+                        LOG.info("resource inbounded");
+
                         return 1;
                     } catch (   IOException | ResourceUnknownException |
                             ResourceUnavailableException | ResourceRepositoryException e) {
