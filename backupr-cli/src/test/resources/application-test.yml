@@ -12,3 +12,6 @@ aws:
   credentials:
     bucketname: backupr-dev
 
+application:
+  index:
+    location: ./backupr/index.json
