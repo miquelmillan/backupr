@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.port.exception;
+package com.miquelmillan.backupr.domain.resource.exception;
 
 public class ResourceUnknownException extends Exception {
     public ResourceUnknownException(){

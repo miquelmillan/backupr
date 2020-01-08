@@ -2,7 +2,7 @@ package com.miquelmillan.backupr.uc.port.folder;
 
 import com.miquelmillan.backupr.domain.index.IndexEntry;
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
-import com.miquelmillan.backupr.uc.port.Resource;
+import com.miquelmillan.backupr.domain.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

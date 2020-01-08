@@ -4,7 +4,7 @@ import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
-import com.miquelmillan.backupr.uc.port.Resource;
+import com.miquelmillan.backupr.domain.resource.Resource;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

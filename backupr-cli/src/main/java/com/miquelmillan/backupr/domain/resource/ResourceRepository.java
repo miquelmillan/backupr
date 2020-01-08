@@ -1,6 +1,6 @@
-package com.miquelmillan.backupr.uc.port;
+package com.miquelmillan.backupr.domain.resource;
 
-import com.miquelmillan.backupr.uc.port.exception.ResourceRepositoryException;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 
 import java.io.IOException;
 

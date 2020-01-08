@@ -2,6 +2,8 @@ package com.miquelmillan.backupr.uc.port;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
+import com.miquelmillan.backupr.domain.resource.Resource;
+import com.miquelmillan.backupr.domain.resource.ResourceRepository;
 import com.miquelmillan.backupr.uc.port.port.ResourceRequester;
 import org.junit.Before;
 import org.junit.Test;

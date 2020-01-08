@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
-import com.miquelmillan.backupr.uc.port.Resource;
+import com.miquelmillan.backupr.domain.resource.Resource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;

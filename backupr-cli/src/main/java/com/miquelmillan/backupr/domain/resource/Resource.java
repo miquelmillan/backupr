@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.port;
+package com.miquelmillan.backupr.domain.resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miquelmillan.backupr.domain.contents.Contents;

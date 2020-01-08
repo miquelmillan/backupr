@@ -2,10 +2,10 @@ package com.miquelmillan.backupr.uc.port.folder;
 
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
-import com.miquelmillan.backupr.uc.port.Resource;
-import com.miquelmillan.backupr.uc.port.exception.ResourceRepositoryException;
-import com.miquelmillan.backupr.uc.port.exception.ResourceUnavailableException;
-import com.miquelmillan.backupr.uc.port.exception.ResourceUnknownException;
+import com.miquelmillan.backupr.domain.resource.Resource;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
 import com.miquelmillan.backupr.uc.port.port.ResourceComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.miquelmillan.backupr.uc.port.port;
 
-import com.miquelmillan.backupr.uc.port.Resource;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
+import com.miquelmillan.backupr.domain.resource.Resource;
+import com.miquelmillan.backupr.domain.resource.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

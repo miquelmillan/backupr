@@ -1,10 +1,10 @@
 package com.miquelmillan.backupr.application;
 
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.uc.port.Resource;
-import com.miquelmillan.backupr.uc.port.exception.ResourceRepositoryException;
-import com.miquelmillan.backupr.uc.port.exception.ResourceUnavailableException;
-import com.miquelmillan.backupr.uc.port.exception.ResourceUnknownException;
+import com.miquelmillan.backupr.domain.resource.Resource;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
+import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
 import com.miquelmillan.backupr.uc.port.file.BackupFile;
 import com.miquelmillan.backupr.uc.port.file.RestoreFile;
 import com.miquelmillan.backupr.uc.port.folder.BackupFolder;
