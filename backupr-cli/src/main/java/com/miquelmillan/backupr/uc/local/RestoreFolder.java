@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.port.folder;
+package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
@@ -6,7 +6,6 @@ import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
-import com.miquelmillan.backupr.uc.port.port.ResourceComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +20,15 @@ import java.util.List;
 @Qualifier("restoreFolderUC")
 public class RestoreFolder {
     @Autowired
-    private ResourceComponent component;
+    private RestoreFile restoreFile;
     @Autowired
     private IndexEntryRepository index;
 
     private static Logger LOG = LoggerFactory.getLogger(RestoreFolder.class);
 
-    public RestoreFolder(ResourceComponent component,
+    public RestoreFolder(RestoreFile restoreFile,
                         IndexEntryRepository index) {
-        this.component = component;
+        this.restoreFile = restoreFile;
         this.index = index;
     }
 
@@ -42,7 +41,7 @@ public class RestoreFolder {
                 .map( r -> {
                     try {
                         LOG.debug("inbounding resource: {}", r.getId());
-                        this.component.inboundResource(r.getId());
+                        this.restoreFile.restoreFile(r.getId());
                         LOG.info("resource inbounded");
 
                         return 1;

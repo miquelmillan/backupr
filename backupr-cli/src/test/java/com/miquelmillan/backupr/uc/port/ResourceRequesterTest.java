@@ -4,7 +4,6 @@ import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.ResourceRepository;
-import com.miquelmillan.backupr.uc.port.port.ResourceRequester;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,7 +43,7 @@ public class ResourceRequesterTest {
     public void mockedLocalRepo_ListLocalFiles_ListOk() throws IOException {
         when(localRepo.query(this.sampleResource)).thenReturn(this.prepareResourceResult());
 
-        ResourceRequester requester = new ResourceRequester(localRepo, remoteRepo);
+        LocalResourceRequester requester = new LocalResourceRequester(localRepo, remoteRepo);
         Resource result = requester.requestOutputResource(this.sampleResource);
 
         verify(localRepo, times(1)).query(this.sampleResource);

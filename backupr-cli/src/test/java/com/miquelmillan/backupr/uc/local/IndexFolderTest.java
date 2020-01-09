@@ -1,9 +1,9 @@
-package com.miquelmillan.backupr.uc.folder;
+package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.ResourceRepository;
-import com.miquelmillan.backupr.uc.port.folder.IndexFolder;
+import com.miquelmillan.backupr.uc.local.IndexFolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.port.folder;
+package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;

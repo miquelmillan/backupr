@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.folder;
+package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
@@ -9,8 +9,8 @@ import com.miquelmillan.backupr.domain.resource.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
-import com.miquelmillan.backupr.uc.port.folder.BackupFolder;
-import com.miquelmillan.backupr.uc.port.port.ResourceComponent;
+import com.miquelmillan.backupr.uc.local.RestoreFile;
+import com.miquelmillan.backupr.uc.local.RestoreFolder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -29,9 +29,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
-public class BackupFolderTest {
+public class RestoreFolderTest {
     @Mock
-    ResourceComponent component;
+    RestoreFile restoreFile;
 
     @Mock
     IndexEntryRepository<Resource> index;
@@ -55,29 +55,29 @@ public class BackupFolderTest {
     }
 
     @Test
-    public void backupFolderUseCase_backupFolder_backupOk() throws IOException,
-                                                                ResourceRepositoryException,
-                                                                ResourceUnknownException,
-                                                                ResourceUnavailableException {
+    public void restoreFolderUseCase_restoreFolder_backupOk() throws IOException,
+            ResourceRepositoryException,
+            ResourceUnknownException,
+            ResourceUnavailableException {
         // Mock component outboundUid to return always ok
         // Prepare an index of 5 elements
         // Check all of them are processed correctly
         when(index.get(any(Resource.class))).thenReturn(this.prepareListIndexResult());
-        doNothing().when(component).outboundResource(any(UUID.class));
+        doNothing().when(restoreFile).restoreFile(any(UUID.class));
 
-        BackupFolder backupFolderUc = new BackupFolder(component, index);
+        RestoreFolder restoreFolderUc = new RestoreFolder(restoreFile, index);
 
-        assertTrue(backupFolderUc.backupFolder(this.location));
+        assertTrue(restoreFolderUc.restoreFolder(this.location));
 
         // Mock component outboundUid to return always failure
         // Prepare an index of 5 elements
         // Check all of them are processed incorrectly
         when(index.get(any(Resource.class))).thenReturn(this.prepareListIndexResult());
-        Mockito.doThrow(ResourceUnavailableException.class).when(component).outboundResource(any(UUID.class));
+        Mockito.doThrow(ResourceUnavailableException.class).when(restoreFile).restoreFile(any(UUID.class));
 
-        assertFalse(backupFolderUc.backupFolder(this.location));
+        assertFalse(restoreFolderUc.restoreFolder(this.location));
 
-        verify(component, times(10)).outboundResource(any(UUID.class));
+        verify(restoreFile, times(10)).restoreFile(any(UUID.class));
     }
 
     private IndexEntry<Resource> prepareIndexResultUnique() throws FileNotFoundException {
@@ -88,9 +88,9 @@ public class BackupFolderTest {
         Resource result;
 
         result = new Resource(this.uid,
-                    "file1.txt",
-                        new Location(path + File.separatorChar + "file1.txt"),
-                        new Contents(path + File.separatorChar + "file1.txt" ));
+                "file1.txt",
+                new Location(path + File.separatorChar + "file1.txt"),
+                new Contents(path + File.separatorChar + "file1.txt" ));
 
         return result;
     }

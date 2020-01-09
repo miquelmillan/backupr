@@ -5,7 +5,6 @@ import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
-import com.miquelmillan.backupr.uc.port.port.ResourceProcessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,7 +43,7 @@ public class ResourceProcessorTest {
     public void mockedRemoteRepo_StoreRemoteFiles_StoreOk() throws IOException, ResourceRepositoryException {
         doNothing().when(remoteRepo).store(sampleResource);
 
-        ResourceProcessor processor = new ResourceProcessor(localRepo, remoteRepo);
+        LocalResourceProcessor processor = new LocalResourceProcessor(localRepo, remoteRepo);
         Resource result = processor.processOutputResource(sampleResource);
 
         verify(remoteRepo, times(1)).store(sampleResource);
@@ -57,7 +56,7 @@ public class ResourceProcessorTest {
     public void mockedLocalRepo_StoreLocalFiles_StoreOk() throws IOException, ResourceRepositoryException {
         doNothing().when(localRepo).store(sampleResource);
 
-        ResourceProcessor processor = new ResourceProcessor(localRepo, remoteRepo);
+        LocalResourceProcessor processor = new LocalResourceProcessor(localRepo, remoteRepo);
         Resource result = processor.processInputResource(sampleResource);
 
         verify(remoteRepo, times(0)).store(sampleResource);

@@ -1,8 +1,7 @@
-package com.miquelmillan.backupr.uc.port.port;
+package com.miquelmillan.backupr.uc.port;
 
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.ResourceRepository;
-import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -10,25 +9,25 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class ResourceProcessor {
+public class LocalResourceRequester {
     private ResourceRepository localRepository;
     private ResourceRepository remoteRepository;
 
     @Autowired
-    public ResourceProcessor(
+    public LocalResourceRequester(
             @Qualifier("fsResourceRepository") ResourceRepository localRepository,
-            @Qualifier("s3ResourceRepository") ResourceRepository remoteRepository){
+            @Qualifier("s3ResourceRepository") ResourceRepository remoteRepository
+    ){
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }
 
-    public Resource processOutputResource(Resource resource) throws IOException, ResourceRepositoryException {
-        this.remoteRepository.store(resource);
-        return resource;
+    public Resource requestOutputResource(Resource item) throws IOException {
+        return this.localRepository.query(item);
     }
 
-    public Resource processInputResource(Resource resource) throws IOException, ResourceRepositoryException {
-        this.localRepository.store(resource);
-        return resource;
+    public Resource requestInputResource(Resource item) throws IOException {
+        return this.remoteRepository.query(item);
     }
+
 }
