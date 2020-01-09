@@ -48,10 +48,10 @@ public class RestoreFile {
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        Resource result = this.requester.requestOutputResource(resource);
+        Resource result = this.requester.requestInputResource(resource);
 
         if (result != null) {
-            this.processor.processOutputResource(result);
+            this.processor.processInputResource(result);
         } else {
             throw new ResourceUnavailableException("Resource was not available locally");
         }

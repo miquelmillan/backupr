@@ -48,10 +48,10 @@ public class BackupFile {
         this.index.addOrUpdate(new IndexEntry(resource, IndexEntry.State.PENDING));
 
         // Process the outbound of the resource
-        Resource result = this.requester.requestInputResource(resource);
+        Resource result = this.requester.requestOutputResource(resource);
 
         if (result != null) {
-            this.processor.processInputResource(result);
+            this.processor.processOutputResource(result);
         } else {
             throw new ResourceUnavailableException("Resource was not available locally");
         }

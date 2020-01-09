@@ -59,7 +59,7 @@ public class RestoreFileTest {
     }
 
     @Test
-    public void restoreFileUseCase_restoreFile_backupOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
+    public void restoreFileUseCase_restoreFile_restoreOk() throws IOException, ResourceRepositoryException, ResourceUnknownException, ResourceUnavailableException {
         when(requester.requestInputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(processor.processInputResource(sample)).thenReturn(this.prepareResourceResultUnique());
         when(index.get(uid)).thenReturn(entry);

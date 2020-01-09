@@ -73,11 +73,11 @@ public class RestoreFolderTest {
         // Prepare an index of 5 elements
         // Check all of them are processed incorrectly
         when(index.get(any(Resource.class))).thenReturn(this.prepareListIndexResult());
-        Mockito.doThrow(ResourceUnavailableException.class).when(component).outboundResource(any(UUID.class));
+        Mockito.doThrow(ResourceUnavailableException.class).when(component).inboundResource(any(UUID.class));
 
         assertFalse(restoreFolderUc.restoreFolder(this.location));
 
-        verify(component, times(10)).outboundResource(any(UUID.class));
+        verify(component, times(10)).inboundResource(any(UUID.class));
     }
 
     private IndexEntry<Resource> prepareIndexResultUnique() throws FileNotFoundException {
