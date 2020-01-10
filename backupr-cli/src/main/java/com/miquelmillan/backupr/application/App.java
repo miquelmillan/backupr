@@ -33,7 +33,7 @@ import java.util.UUID;
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties
-@ComponentScan("com.miquelmillan.context")
+@ComponentScan("com.miquelmillan.backupr")
 public class App implements CommandLineRunner {
 
     public static int ERROR_PARAMETERS_WRONG_NUMBER = 1;
