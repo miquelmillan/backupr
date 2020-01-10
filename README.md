@@ -2,7 +2,7 @@
 
 Yet another backup tool. Intended to backup all your resources (files, facebook pics, instagram posts, etc) and have a unique place where you can find them.
 
-After some time not doing software I wanted to refresh my Java skills, so this is a project in which I intend to refresh them (and some more), and additionally learn more about the following topics:
+After some time not doing software I wanted to refresh my Java skills, so this is a project in which I intend to refresh them and additionally learn more about the following topics:
 - Clean Architecture
 - Spring Boot
 - OAuth2
