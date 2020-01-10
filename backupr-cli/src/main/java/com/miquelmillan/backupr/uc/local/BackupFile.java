@@ -20,24 +20,24 @@ import java.util.UUID;
 @Component
 @Qualifier("backupFileUC")
 public class BackupFile {
-        @Autowired
-        private LocalResourceRequester requester;
+    @Autowired
+    private LocalResourceRequester requester;
 
-        @Autowired
-        private LocalResourceProcessor processor;
+    @Autowired
+    private LocalResourceProcessor processor;
 
-        @Autowired
-        private IndexEntryRepository index;
+    @Autowired
+    private IndexEntryRepository index;
 
-        private static Logger LOG = LoggerFactory.getLogger(BackupFile.class);
+    private static Logger LOG = LoggerFactory.getLogger(BackupFile.class);
 
-        public BackupFile(LocalResourceRequester requester,
-                          LocalResourceProcessor processor,
-                          IndexEntryRepository index) {
-            this.requester = requester;
-            this.processor = processor;
-            this.index = index;
-        }
+    public BackupFile(LocalResourceRequester requester,
+                      LocalResourceProcessor processor,
+                      IndexEntryRepository index) {
+        this.requester = requester;
+        this.processor = processor;
+        this.index = index;
+    }
 
     public void backupFile(UUID uid) throws ResourceUnknownException, ResourceUnavailableException, IOException, ResourceRepositoryException {
         Resource resource = (Resource) this.index.get(uid).getElement();

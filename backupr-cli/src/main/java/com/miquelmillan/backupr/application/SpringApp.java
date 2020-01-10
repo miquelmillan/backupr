@@ -5,12 +5,7 @@ import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
-import com.miquelmillan.backupr.uc.local.BackupFile;
-import com.miquelmillan.backupr.uc.local.RestoreFile;
-import com.miquelmillan.backupr.uc.local.BackupFolder;
-import com.miquelmillan.backupr.uc.local.IndexFolder;
-import com.miquelmillan.backupr.uc.local.ListIndexedFolder;
-import com.miquelmillan.backupr.uc.local.RestoreFolder;
+import com.miquelmillan.backupr.uc.local.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +29,12 @@ import java.util.UUID;
 @EnableConfigurationProperties
 @ConfigurationProperties
 @ComponentScan("com.miquelmillan.backupr")
-public class App implements CommandLineRunner {
+public class SpringApp implements CommandLineRunner {
 
     public static int ERROR_PARAMETERS_WRONG_NUMBER = 1;
     public static int ERROR_RUNTIME_EXCEPTION = 2;
 
-    private static Logger LOG = LoggerFactory.getLogger(App.class);
+    private static Logger LOG = LoggerFactory.getLogger(SpringApp.class);
 
     @Autowired
     @Qualifier("backupFolderUC")
@@ -68,7 +63,7 @@ public class App implements CommandLineRunner {
 
     public static void main(String[] args) {
         LOG.info("STARTING THE APPLICATION");
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(SpringApp.class, args);
         LOG.info("APPLICATION FINISHED");
     }
 

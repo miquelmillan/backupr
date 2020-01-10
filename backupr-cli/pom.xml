@@ -14,22 +14,6 @@
         <version>2.1.5.RELEASE</version>
     </parent>
 
-
-<!--    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>99-empty</version>
-            </dependency>
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>99-empty</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>-->
-
     <!-- Add typical dependencies for a web application -->
     <dependencies>
         <dependency>

@@ -2,6 +2,16 @@
 
 Yet another backup tool. Intended to backup all your resources (files, facebook pics, instagram posts, etc) and have a unique place where you can find them.
 
+After some time not doing software I wanted to refresh my Java skills, so this is a project in which I intend to refresh them (and some more), and additionally learn more about the following topics:
+- Clean Architecture
+- Spring Boot
+- OAuth2
+- Java 8
+
+If you are interested on its roadmap, or just what it's going on here, please visit [Backupr roadmap](https://trello.com/b/OMdmz5L8/backupr)
+
+For any suggestion, comment, request or advise, please open an issue in Github, I will surely reach you back :-)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
