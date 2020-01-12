@@ -1,11 +1,11 @@
-package com.miquelmillan.backupr.adapter.filesystem;
+package com.miquelmillan.backupr.adapter.repository.filesystem;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
-import com.miquelmillan.backupr.adapter.filesystem.resource.FileSystemResourceRepository;
+import com.miquelmillan.backupr.adapter.repository.filesystem.FileSystemResourceRepository;
 import org.junit.After;
 import org.junit.Test;
 

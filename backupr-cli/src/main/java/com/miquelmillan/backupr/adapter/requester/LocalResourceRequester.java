@@ -1,8 +1,8 @@
 package com.miquelmillan.backupr.adapter.requester;
 
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
-import com.miquelmillan.backupr.uc.port.ResourceRequester;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.requester.ResourceRequester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

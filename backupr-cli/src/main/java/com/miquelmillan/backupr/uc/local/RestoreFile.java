@@ -1,16 +1,14 @@
 package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.uc.UseCase;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
-import com.miquelmillan.backupr.adapter.processor.LocalResourceProcessor;
-import com.miquelmillan.backupr.adapter.requester.LocalResourceRequester;
-import com.miquelmillan.backupr.uc.port.ResourceProcessor;
-import com.miquelmillan.backupr.uc.port.ResourceRequester;
+import com.miquelmillan.backupr.uc.UseCase;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.processor.ResourceProcessor;
+import com.miquelmillan.backupr.uc.port.requester.ResourceRequester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +32,8 @@ public class RestoreFile implements UseCase {
 
     private static Logger LOG = LoggerFactory.getLogger(RestoreFile.class);
 
-    public RestoreFile(LocalResourceRequester requester,
-                       LocalResourceProcessor processor,
+    public RestoreFile(ResourceRequester requester,
+                       ResourceProcessor processor,
                        IndexEntryRepository index) {
         this.requester = requester;
         this.processor = processor;

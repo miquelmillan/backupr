@@ -1,10 +1,10 @@
-package com.miquelmillan.backupr.uc.port;
+package com.miquelmillan.backupr.adapter.processor;
 
-import com.miquelmillan.backupr.adapter.processor.LocalResourceProcessor;
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class ResourceProcessorTest {
+public class LocalResourceProcessorTest {
     @Mock
     ResourceRepository remoteRepo;
 

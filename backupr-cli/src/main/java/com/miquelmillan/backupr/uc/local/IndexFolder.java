@@ -3,7 +3,7 @@ package com.miquelmillan.backupr.uc.local;
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
 import com.miquelmillan.backupr.uc.UseCase;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import org.apache.commons.io.FileUtils;

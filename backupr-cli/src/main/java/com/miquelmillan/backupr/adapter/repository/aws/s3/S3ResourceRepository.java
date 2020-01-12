@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.adapter.aws.s3;
+package com.miquelmillan.backupr.adapter.repository.aws.s3;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
@@ -12,7 +12,7 @@ import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,12 +1,11 @@
-package com.miquelmillan.backupr.adapter.filesystem;
+package com.miquelmillan.backupr.adapter.index.filesystem;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
-import com.miquelmillan.backupr.adapter.filesystem.index.FileSystemIndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;

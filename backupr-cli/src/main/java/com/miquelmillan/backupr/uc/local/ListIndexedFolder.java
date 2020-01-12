@@ -2,7 +2,7 @@ package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.index.IndexEntry;
 import com.miquelmillan.backupr.uc.UseCase;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.uc.port;
+package com.miquelmillan.backupr.uc.port.repository;
 
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;

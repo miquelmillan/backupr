@@ -2,15 +2,15 @@ package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.uc.port.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.processor.ResourceProcessor;
+import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnavailableException;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceUnknownException;
-import com.miquelmillan.backupr.adapter.processor.LocalResourceProcessor;
-import com.miquelmillan.backupr.adapter.requester.LocalResourceRequester;
+import com.miquelmillan.backupr.uc.port.requester.ResourceRequester;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 
 public class RestoreFileTest {
     @Mock
-    LocalResourceProcessor processor;
+    ResourceProcessor processor;
 
     @Mock
-    LocalResourceRequester requester;
+    ResourceRequester requester;
 
     @Mock
     IndexEntryRepository<Resource> index;

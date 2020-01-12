@@ -5,9 +5,7 @@ import java.util.Objects;
 public class Location {
     private String location;
 
-    public Location(){
-
-    }
+    public Location(){}
 
     public Location(String location) {
         this.location = location;

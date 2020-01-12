@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.adapter.filesystem.index;
+package com.miquelmillan.backupr.adapter.index.filesystem;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.port.repository.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
