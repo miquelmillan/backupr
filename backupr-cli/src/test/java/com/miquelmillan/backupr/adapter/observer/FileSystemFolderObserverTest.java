@@ -1,4 +1,4 @@
-package com.miquelmillan.backupr.adapter.watcher;
+package com.miquelmillan.backupr.adapter.observer;
 
 import com.miquelmillan.backupr.uc.port.repository.ResourceRepository;
 import org.junit.After;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertNotNull;
 
 
-public class FileSystemFolderWatcherTest {
+public class FileSystemFolderObserverTest {
 
     private String basePath;
 
@@ -26,7 +26,7 @@ public class FileSystemFolderWatcherTest {
 
     @Test
     public void pathWithFiles_WatchFolder_WatchOk() throws IOException {
-        // FolderWatcher watcher = new FolderWatcher((new File(this.basePath)).toPath(), true);
+        // FolderObserver watcher = new FolderObserver((new File(this.basePath)).toPath(), true);
         // watcher.processEvents();
     }
 }

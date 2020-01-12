@@ -108,6 +108,32 @@ public class FileSystemIndexEntryRepository implements IndexEntryRepository<Reso
     }
 
 
+    @Override
+    public Resource getUnique(Resource params) {
+        List<Resource> result = null;
+
+        if (params.getLocation() != null){
+            String loc = params.getLocation().getLocation();
+            result =
+                    entries.values().
+                            stream().
+                            filter( r -> {
+                                if (r.getElement().getLocation() != null) {
+                                    return r.getElement().getLocation().getLocation().equals(loc);
+                                }
+                                return false;
+                            }).map( r -> r.getElement())
+                            .collect(Collectors.toList());
+
+        }
+
+        if (result != null && result.size() == 1) {
+            return result.get(0);
+        }
+
+        return null;
+    }
+
     public Collection<IndexEntry<Resource>> listAll() {
         return this.entries.values();
     }

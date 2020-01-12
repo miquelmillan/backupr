@@ -1,35 +1,43 @@
-package com.miquelmillan.backupr.adapter.watcher.filesystem;
+package com.miquelmillan.backupr.adapter.observer.filesystem;
 
+import com.miquelmillan.backupr.domain.location.Location;
+import com.miquelmillan.backupr.domain.resource.Resource;
+import com.miquelmillan.backupr.domain.resource.ResourceEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.nio.file.*;
-import static java.nio.file.StandardWatchEventKinds.*;
-import static java.nio.file.LinkOption.*;
-import java.nio.file.attribute.*;
-import java.io.*;
-import java.util.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
 
-public class FolderWatcher extends Observable {
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+import static java.nio.file.StandardWatchEventKinds.*;
+
+public class FolderObserver extends Observable {
+    private static Logger LOG = LoggerFactory.getLogger(FolderObserver.class);
+
     private final WatchService watcher;
     private final Map<WatchKey, Path> keys;
     private boolean trace;
 
-    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
-        return (WatchEvent<T>) event;
-    }
 
-    public FolderWatcher(Path dir) throws IOException {
+    public FolderObserver(Path dir) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap();
 
-        System.out.format("Scanning %s ...\n", dir);
+        LOG.debug("Scanning {} ...\n", dir);
         registerAll(dir);
-        System.out.println("Done.");
+        LOG.debug("Done.");
 
         // enable trace after initial registration
         this.trace = true;
     }
 
     public void processEvents() {
-        for (;;) {
+        do {
             // wait for key to be signalled
             WatchKey key;
             try {
@@ -54,15 +62,13 @@ public class FolderWatcher extends Observable {
                 }
 
                 // Context for directory entry event is the file name of entry
-                WatchEvent<Path> ev = cast(event);
+                WatchEvent<Path> ev = (WatchEvent<Path>) event;
                 Path name = ev.context();
                 Path child = dir.resolve(name);
 
                 // Tell the consumer of this watcher to do stuff
-                System.out.format("%s: %s\n", event.kind().name(), child);
-
-                setChanged();
-                notifyObservers(event);
+                LOG.debug("{}: {}\n", event.kind().name(), child);
+                this.notifyEvent(event, child);
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
@@ -87,6 +93,29 @@ public class FolderWatcher extends Observable {
                     break;
                 }
             }
+        } while (true);
+    }
+
+    private void notifyEvent(WatchEvent<?> event, Path child) {
+        WatchEvent.Kind kind = event.kind();
+        ResourceEvent resEvent = new ResourceEvent();
+        Resource resource = new Resource(new Location(child.toString()));
+
+        resEvent.setResource(resource);
+
+        if (kind == ENTRY_CREATE) {
+            resEvent.setType(ResourceEvent.EventType.CREATED);
+        } else if (kind == ENTRY_MODIFY) {
+            resEvent.setType(ResourceEvent.EventType.UPDATED);
+        } else if (kind == ENTRY_DELETE) {
+            resEvent.setType(ResourceEvent.EventType.DELETED);
+        }
+
+        if (resEvent.getType() != null) {
+            this.notifyObservers(resEvent);
+            this.setChanged();
+        } else {
+            this.clearChanged();
         }
     }
 
@@ -114,10 +143,10 @@ public class FolderWatcher extends Observable {
         if (trace) {
             Path prev = keys.get(key);
             if (prev == null) {
-                System.out.format("register: %s\n", dir);
+                LOG.debug("register: {}\n", dir);
             } else {
                 if (!dir.equals(prev)) {
-                    System.out.format("update: %s -> %s\n", prev, dir);
+                    LOG.debug("update: {} -> {}\n", prev, dir);
                 }
             }
         }

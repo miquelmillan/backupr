@@ -16,6 +16,7 @@ public interface IndexEntryRepository<T extends Serializable> {
 
     IndexEntry<T> get(UUID id);
     List<T> get(T params);
+    T getUnique(T params);
 
     Collection<IndexEntry<T>> listAll();
 }
