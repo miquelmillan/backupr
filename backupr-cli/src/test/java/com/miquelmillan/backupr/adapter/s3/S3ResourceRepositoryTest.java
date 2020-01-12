@@ -2,7 +2,7 @@ package com.miquelmillan.backupr.adapter.s3;
 
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.domain.resource.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.adapter.aws.s3.S3ResourceRepository;
 import com.miquelmillan.backupr.adapter.filesystem.resource.FileSystemResourceRepository;

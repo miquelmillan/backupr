@@ -2,7 +2,8 @@ package com.miquelmillan.backupr.uc.local;
 
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.index.IndexEntry;
-import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.UseCase;
+import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import org.apache.commons.io.FileUtils;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 @Component
 @Qualifier("indexFolderUC")
-public class IndexFolder {
+public class IndexFolder implements UseCase {
     @Autowired
     private IndexEntryRepository index;
 

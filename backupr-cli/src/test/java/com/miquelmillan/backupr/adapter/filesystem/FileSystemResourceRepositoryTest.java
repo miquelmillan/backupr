@@ -3,7 +3,7 @@ package com.miquelmillan.backupr.adapter.filesystem;
 import com.miquelmillan.backupr.domain.contents.Contents;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
-import com.miquelmillan.backupr.domain.resource.ResourceRepository;
+import com.miquelmillan.backupr.uc.port.ResourceRepository;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
 import com.miquelmillan.backupr.adapter.filesystem.resource.FileSystemResourceRepository;
 import org.junit.After;

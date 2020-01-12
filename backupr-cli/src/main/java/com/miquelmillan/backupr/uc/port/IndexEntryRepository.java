@@ -1,4 +1,6 @@
-package com.miquelmillan.backupr.domain.index;
+package com.miquelmillan.backupr.uc.port;
+
+import com.miquelmillan.backupr.domain.index.IndexEntry;
 
 import java.io.IOException;
 import java.io.Serializable;

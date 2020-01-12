@@ -1,6 +1,7 @@
 package com.miquelmillan.backupr.uc.local;
 
-import com.miquelmillan.backupr.domain.index.IndexEntryRepository;
+import com.miquelmillan.backupr.uc.UseCase;
+import com.miquelmillan.backupr.uc.port.IndexEntryRepository;
 import com.miquelmillan.backupr.domain.location.Location;
 import com.miquelmillan.backupr.domain.resource.Resource;
 import com.miquelmillan.backupr.domain.resource.exception.ResourceRepositoryException;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Component
 @Qualifier("backupFolderUC")
-public class BackupFolder {
+public class BackupFolder implements UseCase {
 
     @Autowired
     private BackupFile backupFile;
