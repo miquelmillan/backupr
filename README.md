@@ -1,4 +1,5 @@
 # Backupr
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=miquelmillan_backupr&metric=alert_status)](https://sonarcloud.io/dashboard?id=miquelmillan_backupr)
 
 Yet another backup tool. Intended to backup all your resources (files, facebook pics, instagram posts, etc) and have a unique place where you can find them.
 
